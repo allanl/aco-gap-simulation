@@ -9,8 +9,8 @@ if __name__ == '__main__':
     for agent in agents:
         print agent
 
-    ants = [Ant(agents[0], TaskFactory.get_task('a'))]
-    ants.append(Ant(agents[1], TaskFactory.get_task('b')))
+    ants = [Ant(agents[0], TaskFactory.get_task('a'), None)]
+    ants.append(Ant(agents[1], TaskFactory.get_task('b'), None))
     for ant in ants:
         print ant
         ant.goal.process(None)
