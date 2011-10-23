@@ -12,9 +12,15 @@ def print_agents(agents_list):
     for index in range(len(agents_list)):
         print agents_list[index]
 
+def link(agent1, agent2):
+    agent1.add_connection(agent2)
+
 if __name__ == '__main__':
     agents = []
     create_agents(agents, 10)
+
+    link(agents[0], agents[3])
+
     print_agents(agents)
     print agents
 

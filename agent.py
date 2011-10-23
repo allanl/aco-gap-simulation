@@ -6,9 +6,18 @@ class Agent:
         self.max_connections = max_connections
         self.tasks = []
 
-    def add_connection(self, connection):
-        if len(self.connections) < max_connections:
-            self.connections.append(connection)
+    def add_connection(self, agent):
+        if len(self.connections) < self.max_connections:
+            self.connections.append(agent)
+            if (not agent.has_connection(self)):
+                agent.add_connection(self)
+        else:
+            raise Exception('too many connections')
+
+    def has_connection(self, agent):
+        if (self.connections.count(agent) > 0):
+            return True
+        return False
 
     def add_task(self, task):
         self.tasks.append(task)
