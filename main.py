@@ -20,6 +20,15 @@ if __name__ == '__main__':
     create_agents(agents, 10)
 
     link(agents[0], agents[3])
+    link(agents[0], agents[7])
+    link(agents[1], agents[2])
+    link(agents[1], agents[8])
+    link(agents[2], agents[9])
+    link(agents[3], agents[9])
+    link(agents[4], agents[5])
+    link(agents[4], agents[6])
+    link(agents[5], agents[7])
+    link(agents[6], agents[8])
 
     print_agents(agents)
     print agents

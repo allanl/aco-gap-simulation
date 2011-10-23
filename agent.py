@@ -22,11 +22,14 @@ class Agent:
     def add_task(self, task):
         self.tasks.append(task)
 
+    def get_name(self):
+        return self.name
+
     def __str__(self):
         return '''
-Agent:
-Name: %s
+Agent: %s
 Connections: %s
 Max Connections: %d
 Tasks: %s''' % (
-        self.name, self.connections, self.max_connections, self.tasks)
+        self.name, [conn.get_name() for conn in self.connections],
+        self.max_connections, self.tasks)
