@@ -1,3 +1,4 @@
+from connection import Connection
 
 class Agent:
     def __init__(self, name, max_connections):
@@ -8,14 +9,14 @@ class Agent:
 
     def add_connection(self, agent):
         if len(self.connections) < self.max_connections:
-            self.connections.append(agent)
+            self.connections.append(Connection(agent))
             if (not agent.has_connection(self)):
                 agent.add_connection(self)
         else:
             raise Exception('too many connections')
 
     def has_connection(self, agent):
-        if (self.connections.count(agent) > 0):
+        if (agent in [conn.get_agent() for conn in self.connections]):
             return True
         return False
 
@@ -31,5 +32,5 @@ Agent: %s
 Connections: %s
 Max Connections: %d
 Tasks: %s''' % (
-        self.name, [conn.get_name() for conn in self.connections],
+        self.name, [conn.get_agent().get_name() for conn in self.connections],
         self.max_connections, self.tasks)
