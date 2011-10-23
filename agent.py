@@ -23,6 +23,12 @@ class Agent:
     def add_task(self, task):
         self.tasks.append(task)
 
+    def get_connection_str(self):
+        return reduce(
+                lambda a, b: '%s, %s' % (a, b),
+                [conn.get_agent().get_name() for conn in self.connections],
+                )
+
     def get_name(self):
         return self.name
 
@@ -32,5 +38,5 @@ Agent: %s
 Connections: %s
 Max Connections: %d
 Tasks: %s''' % (
-        self.name, [conn.get_agent().get_name() for conn in self.connections],
+        self.name, self.get_connection_str(),
         self.max_connections, self.tasks)
