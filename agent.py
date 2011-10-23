@@ -19,4 +19,5 @@ Agent:
 Name: %s
 Connections: %s
 Max Connections: %d
-Tasks: %s''' % (self.name, self.connections, self.max_connections, self.tasks)
+Tasks: %s''' % (
+        self.name, self.connections, self.max_connections, self.tasks)
