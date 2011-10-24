@@ -24,9 +24,8 @@ class Agent:
         self.tasks.append(task)
 
     def get_connection_str(self):
-        return reduce(
-                lambda a, b: '%s, %s' % (a, b),
-                [conn.get_agent().get_name() for conn in self.connections],
+        return ', '.join(
+                [conn.get_agent().get_name() for conn in self.connections]
                 )
 
     def get_name(self):
