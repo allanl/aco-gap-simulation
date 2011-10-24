@@ -18,5 +18,5 @@ Ant %d:
 path: %s
 goal: %s
 payload: %s''' % (
-        self.number, self.show_path(), self.goal, self.payload)
+        self.number, self.show_path(), self.goal.name, self.payload)
 
