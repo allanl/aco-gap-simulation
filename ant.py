@@ -9,11 +9,14 @@ class Ant:
         self.goal = goal
         self.payload = payload
 
+    def show_path(self):
+        return ', '.join([agent.get_name() for agent in self.path])
+
     def __str__(self):
         return '''
 Ant %d:
 path: %s
 goal: %s
 payload: %s''' % (
-        self.number, self.path, self.goal, self.payload)
+        self.number, self.show_path(), self.goal, self.payload)
 
