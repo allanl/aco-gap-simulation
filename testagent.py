@@ -32,6 +32,12 @@ class TestAgent(unittest.TestCase):
         with self.assertRaises(TooManyConnections):
             self.agent4.add_connection(self.agent1)
 
+    def test_remove_connection(self):
+        self.agent1.add_connection(self.agent2)
+        self.assertTrue(self.agent1.has_connection(self.agent2))
+        self.agent1.remove_connection(self.agent2)
+        self.assertFalse(self.agent1.has_connection(self.agent2))
+
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAgent)
     unittest.TextTestRunner(verbosity=2).run(suite)

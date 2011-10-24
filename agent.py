@@ -23,6 +23,14 @@ class Agent:
             return True
         return False
 
+    def remove_connection(self, agent):
+        count = 0
+        while (count < len(self.connections)):
+            if (self.connections[count].get_agent() == agent):
+                self.connections.remove(self.connections[count])
+                break
+            count += 1
+
     def add_task(self, task):
         self.tasks.append(task)
 
