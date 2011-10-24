@@ -15,6 +15,14 @@ def print_agents(agents_list):
     for index in range(len(agents_list)):
         print agents_list[index]
 
+def print_connections(agents_list):
+    print 'Connections:'
+    for index in range(len(agents_list)):
+        print '%s - %s' % (
+            agents_list[index].get_name(),
+            agents_list[index].get_connection_str()
+            )
+
 def link(agent1, agent2):
     agent1.add_connection(agent2)
 
@@ -34,7 +42,7 @@ if __name__ == '__main__':
     link(agents[6], agents[8])
 
     print_agents(agents)
-    print agents
+    print_connections(agents)
 
     ants = [Ant(agents[0], TaskFactory.get_task('a'), None)]
     ants.append(Ant(agents[1], TaskFactory.get_task('b'), None))
