@@ -31,6 +31,7 @@ class TestAgent(unittest.TestCase):
             self.agent1.add_connection(self.agent4)
         with self.assertRaises(TooManyConnections):
             self.agent4.add_connection(self.agent1)
+        self.assertFalse(self.agent4.has_connection(self.agent1))
 
     def test_remove_connection(self):
         self.agent1.add_connection(self.agent2)

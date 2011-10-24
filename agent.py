@@ -14,7 +14,12 @@ class Agent:
         if len(self.connections) < self.max_connections:
             self.connections.append(Connection(agent))
             if (not agent.has_connection(self)):
-                agent.add_connection(self)
+                try:
+                    agent.add_connection(self)
+                except TooManyConnections:
+                    # other side connections already full
+                    self.remove_connection(agent)
+                    raise
         else:
             raise TooManyConnections
 
