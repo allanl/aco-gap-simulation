@@ -11,6 +11,7 @@ def create_agents(agents_list, count):
         agents_list.append(Agent('agent %d' % (index), max_connections))
 
 def print_agents(agents_list):
+    print 'Agents:'
     for index in range(len(agents_list)):
         print agents_list[index]
 
