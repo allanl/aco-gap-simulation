@@ -38,6 +38,7 @@ class TestAgent(unittest.TestCase):
         self.assertTrue(self.agent1.has_connection(self.agent2))
         self.agent1.remove_connection(self.agent2)
         self.assertFalse(self.agent1.has_connection(self.agent2))
+        self.assertFalse(self.agent2.has_connection(self.agent1))
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAgent)
