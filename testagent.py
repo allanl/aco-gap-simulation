@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import unittest
-from agent import Agent
+from agent import Agent, TooManyConnections
 
 class TestAgent(unittest.TestCase):
     def setUp(self):
@@ -27,8 +27,10 @@ class TestAgent(unittest.TestCase):
     def test_connecting_to_max(self):
         self.agent1.add_connection(self.agent2)
         self.agent1.add_connection(self.agent3)
-        with self.assertRaises(Exception):
+        with self.assertRaises(TooManyConnections):
             self.agent1.add_connection(self.agent4)
+        with self.assertRaises(TooManyConnections):
+            self.agent4.add_connection(self.agent1)
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAgent)

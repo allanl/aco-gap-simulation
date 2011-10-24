@@ -1,5 +1,8 @@
 from connection import Connection
 
+class TooManyConnections(Exception):
+    pass
+
 class Agent:
     def __init__(self, name, max_connections):
         self.name = name
@@ -13,7 +16,7 @@ class Agent:
             if (not agent.has_connection(self)):
                 agent.add_connection(self)
         else:
-            raise Exception('too many connections')
+            raise TooManyConnections
 
     def has_connection(self, agent):
         if (agent in [conn.get_agent() for conn in self.connections]):
