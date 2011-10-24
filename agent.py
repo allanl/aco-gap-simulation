@@ -32,7 +32,7 @@ class Agent:
         count = 0
         while (count < len(self.connections)):
             if (self.connections[count].get_agent() == agent):
-                self.connections.remove(self.connections[count])
+                del self.connections[count]
                 agent.remove_connection(self)
                 break
             count += 1
