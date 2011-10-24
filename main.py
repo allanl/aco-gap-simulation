@@ -4,9 +4,11 @@ from agent import Agent
 from ant import Ant
 from taskfactory import TaskFactory
 
+max_connections = 2
+
 def create_agents(agents_list, count):
     for index in range(count):
-        agents_list.append(Agent('agent %d' % (index), 2))
+        agents_list.append(Agent('agent %d' % (index), max_connections))
 
 def print_agents(agents_list):
     for index in range(len(agents_list)):
