@@ -6,8 +6,9 @@ class TooManyConnections(Exception):
     pass
 
 class Agent:
+    rand = random.SystemRandom()
+
     def __init__(self, name, max_connections):
-        random.seed()
         self.name = name
         self.connections = []
         self.max_connections = max_connections
@@ -45,17 +46,10 @@ class Agent:
 
     def choose_path(self, task):
         agent = None
-        connect = None
-        if (len(self.connections) > 0):
-            if (len(self.connections) == 1):
-                connect = self.connections[0]
-            elif (len(self.connections) == 2):
-                if (random.random() >= 0.5):
-                    connect = self.connections[1]
-                else:
-                    connect = self.connections[0]
-        if (connect != None):
-            agent = connect.get_agent()
+        if (self.connections != []):
+            index = random.randint(0, len(self.connections) - 1)
+            agent = self.connections[index].get_agent()
+
         return agent
 
     def get_connection_str(self):
