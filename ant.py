@@ -13,7 +13,6 @@ class Ant:
         return ', '.join([agent.get_name() for agent in self.path])
 
     def walk(self):
-        print self.path[-1].get_name()
         self.path.append(self.path[-1].choose_path(self.goal))
 
     def __str__(self):
