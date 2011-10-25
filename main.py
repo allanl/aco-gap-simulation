@@ -47,5 +47,6 @@ if __name__ == '__main__':
     ants = [Ant(agents[0], TaskFactory.get_task('a'), None)]
     ants.append(Ant(agents[1], TaskFactory.get_task('b'), None))
     for ant in ants:
+        for f in range(10): ant.walk()
         print ant
         ant.goal.process(None)
