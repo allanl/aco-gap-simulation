@@ -57,6 +57,7 @@ class TestConnection(unittest.TestCase):
 
     def test_add_pheromone(self):
         task = TaskA()
+        self.assertEqual(self.conn1.get_pheromone(task), 0)
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 3)
         self.conn1.add_pheromone(task, 3)
