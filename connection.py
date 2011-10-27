@@ -8,10 +8,16 @@ class Connection(object):
         return self.agent
 
     def add_pheromone(self, task, quantity):
-        self.pheromone[task.__class__] += quantity
+        if (task.__class__ in self.pheromone):
+            self.pheromone[task.__class__] += quantity
+        else:
+            self.pheromone[task.__class__] = quantity
 
     def evaporate_pheromone(self):
         pass
 
     def get_pheromone(self, task):
-        return self.pheromone[task.__class__]
+        if (task.__class__ in self.pheromone):
+            return self.pheromone[task.__class__]
+        else:
+            return 0

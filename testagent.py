@@ -2,6 +2,8 @@
 
 import unittest
 from agent import Agent, TooManyConnections
+from connection import Connection
+from task import TaskA, TaskB, TaskC
 
 class TestAgent(unittest.TestCase):
     def setUp(self):
@@ -44,6 +46,24 @@ class TestAgent(unittest.TestCase):
         self.assertTrue(self.agent1.has_connection(self.agent3))
         self.assertTrue(self.agent3.has_connection(self.agent1))
 
+class TestConnection(unittest.TestCase):
+    def setUp(self):
+        self.max_connections = 7
+        self.agent1 = Agent('agent1', self.max_connections)
+        self.conn1 = Connection(self.agent1)
+
+    def test_get_agent(self):
+        self.assertEqual(self.agent1, self.conn1.get_agent())
+
+    def test_add_pheromone(self):
+        task = TaskA()
+        self.conn1.add_pheromone(task, 3)
+        self.assertEqual(self.conn1.get_pheromone(task), 3)
+        self.conn1.add_pheromone(task, 3)
+        self.assertEqual(self.conn1.get_pheromone(task), 6)
+
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAgent)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestConnection)
     unittest.TextTestRunner(verbosity=2).run(suite)
