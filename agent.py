@@ -12,7 +12,7 @@ class Agent:
         self.name = name
         self.connections = []
         self.max_connections = max_connections
-        self.tasks = []
+        self.tasks = {}
 
     def add_connection(self, agent):
         if (not self.has_connection(agent)):
@@ -42,7 +42,13 @@ class Agent:
             count += 1
 
     def add_task(self, task):
-        self.tasks.append(task)
+        self.tasks[task] = 1
+
+    def has_task(self, task):
+        if self.tasks.get(task, 0) == 1:
+            return True
+        else:
+            return False
 
     def choose_path(self, task):
         agent = None
