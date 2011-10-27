@@ -2,6 +2,7 @@
 
 import unittest
 from agent import Agent, TooManyConnections
+from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
 
@@ -46,6 +47,20 @@ class TestAgent(unittest.TestCase):
         self.assertTrue(self.agent1.has_connection(self.agent3))
         self.assertTrue(self.agent3.has_connection(self.agent1))
 
+class TestAnt(unittest.TestCase):
+    def setUp(self):
+        max_connections = 3
+        self.agent1 = Agent('agent1', max_connections)
+        self.agent2 = Agent('agent2', max_connections)
+        self.agent1.add_connection(self.agent2)
+        self.ant = Ant(self.agent1, TaskA(), None)
+
+    def test_walk(self):
+        self.assertEqual(self.ant.get_location(), self.agent1)
+        self.ant.walk()
+        self.assertEqual(self.ant.get_location(), self.agent2)
+
+
 class TestConnection(unittest.TestCase):
     def setUp(self):
         self.max_connections = 7
@@ -65,6 +80,8 @@ class TestConnection(unittest.TestCase):
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAgent)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestAnt)
     unittest.TextTestRunner(verbosity=2).run(suite)
     suite = unittest.TestLoader().loadTestsFromTestCase(TestConnection)
     unittest.TextTestRunner(verbosity=2).run(suite)

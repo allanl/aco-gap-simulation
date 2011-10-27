@@ -12,6 +12,9 @@ class Ant:
     def show_path(self):
         return ', '.join([agent.get_name() for agent in self.path])
 
+    def get_location(self):
+        return self.path[-1]
+
     def walk(self):
         self.path.append(self.path[-1].choose_path(self.goal))
 
