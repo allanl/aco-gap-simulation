@@ -8,9 +8,11 @@ from taskfactory import TaskFactory
 
 max_connections = 7
 
-def create_agents(agents_list, count):
+def create_agents(count):
+    agents_list = []
     for index in range(count):
         agents_list.append(Agent('agent %d' % (index), max_connections))
+    return agents_list
 
 def print_agents(agents_list):
     print 'Agents:'
@@ -29,8 +31,7 @@ def link(agent1, agent2):
     agent1.add_connection(agent2)
 
 if __name__ == '__main__':
-    agents = []
-    create_agents(agents, 10)
+    agents = create_agents(10)
 
     random.SystemRandom()
     for x in range(len(agents)):
