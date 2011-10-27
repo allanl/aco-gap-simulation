@@ -1,10 +1,12 @@
 #!/usr/bin/python
 
-from agent import Agent
+import random
+
+from agent import Agent, TooManyConnections
 from ant import Ant
 from taskfactory import TaskFactory
 
-max_connections = 2
+max_connections = 7
 
 def create_agents(agents_list, count):
     for index in range(count):
@@ -30,16 +32,15 @@ if __name__ == '__main__':
     agents = []
     create_agents(agents, 10)
 
-    link(agents[0], agents[3])
-    link(agents[0], agents[7])
-    link(agents[1], agents[2])
-    link(agents[1], agents[8])
-    link(agents[2], agents[9])
-    link(agents[3], agents[9])
-    link(agents[4], agents[5])
-    link(agents[4], agents[6])
-    link(agents[5], agents[7])
-    link(agents[6], agents[8])
+    random.SystemRandom()
+    for x in range(len(agents)):
+        for y in range(max_connections):
+            other = random.randint(0, len(agents) - 1)
+            print "link %d,%d" % (x, other)
+            try:
+                link(agents[x], agents[other])
+            except TooManyConnections:
+                break
 
     print_agents(agents)
     print_connections(agents)
