@@ -15,17 +15,17 @@ class Agent:
         self.tasks = []
 
     def add_connection(self, agent):
-        if len(self.connections) < self.max_connections:
-            self.connections.append(Connection(agent))
-            if (not agent.has_connection(self)):
+        if (not self.has_connection(agent)):
+            if len(self.connections) < self.max_connections:
+                self.connections.append(Connection(agent))
                 try:
                     agent.add_connection(self)
                 except TooManyConnections:
                     # other side connections already full
                     self.remove_connection(agent)
                     raise
-        else:
-            raise TooManyConnections
+            else:
+                raise TooManyConnections
 
     def has_connection(self, agent):
         if (agent in [conn.get_agent() for conn in self.connections]):
