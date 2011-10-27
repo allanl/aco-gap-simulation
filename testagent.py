@@ -59,13 +59,19 @@ class TestAnt(unittest.TestCase):
         self.agent1 = Agent('agent1', max_connections)
         self.agent2 = Agent('agent2', max_connections)
         self.agent1.add_connection(self.agent2)
-        self.ant = Ant(self.agent1, TaskA(), None)
+        self.taska = TaskA()
+        self.ant = Ant(self.agent1, self.taska, None)
 
     def test_walk(self):
         self.assertEqual(self.ant.get_location(), self.agent1)
         self.ant.walk()
         self.assertEqual(self.ant.get_location(), self.agent2)
 
+    def test_is_going_home(self):
+        self.assertFalse(self.ant.is_going_home())
+        self.agent2.add_task(self.taska)
+        self.ant.walk()
+        self.assertTrue(self.ant.is_going_home())
 
 class TestConnection(unittest.TestCase):
     def setUp(self):
