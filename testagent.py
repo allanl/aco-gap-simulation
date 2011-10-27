@@ -47,6 +47,12 @@ class TestAgent(unittest.TestCase):
         self.assertTrue(self.agent1.has_connection(self.agent3))
         self.assertTrue(self.agent3.has_connection(self.agent1))
 
+    def test_set_check_task(self):
+        task = TaskA()
+        self.assertFalse(self.agent1.has_task(task))
+        self.agent1.add_task(task)
+        self.assertTrue(self.agent1.has_task(task))
+
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3
