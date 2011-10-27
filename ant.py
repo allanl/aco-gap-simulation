@@ -2,10 +2,10 @@
 class Ant:
     index = 0
 
-    def __init__(self, source, goal, payload):
+    def __init__(self, node, goal, payload):
         self.number = Ant.index
         Ant.index += 1
-        self.path = [source]
+        self.path = [node]
         self.goal = goal
         self.payload = payload
 
