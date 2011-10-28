@@ -67,6 +67,14 @@ class TestAnt(unittest.TestCase):
         self.ant.walk()
         self.assertEqual(self.ant.get_location(), self.agent2)
 
+    def test_is_home(self):
+        self.assertFalse(self.ant.is_home())
+        self.ant.walk()
+        self.assertFalse(self.ant.is_home())
+        self.agent1.add_task(self.taska)
+        ant2 = Ant(self.agent1, self.taska, None)
+        self.assertTrue(ant2.is_home())
+
     def test_is_going_home(self):
         self.assertFalse(self.ant.is_going_home())
         self.agent2.add_task(self.taska)
