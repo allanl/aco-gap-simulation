@@ -5,6 +5,7 @@ class Ant:
     def __init__(self, node, goal, payload):
         self.number = Ant.index
         Ant.index += 1
+        self.path_index = 0
         self.path = [node]
         self.goal = goal
         self.payload = payload
@@ -17,10 +18,11 @@ class Ant:
         return ', '.join([agent.get_name() for agent in self.path])
 
     def get_location(self):
-        return self.path[-1]
+        return self.path[self.path_index]
 
     def walk(self):
         self.path.append(self.get_location().choose_path(self.goal))
+        self.path_index += 1
         if self.get_location().has_task(self.goal):
             self.going_home = True
 
