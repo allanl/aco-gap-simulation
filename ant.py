@@ -24,10 +24,17 @@ class Ant:
         return self.path[self.path_index]
 
     def walk(self):
-        self.path.append(self.get_location().choose_path(self.goal))
-        self.path_index += 1
-        if self.get_location().has_task(self.goal):
-            self.status = Ant.move.RETURN
+        if self.status == Ant.move.HOME:
+            pass
+        elif self.status == Ant.move.RETURN:
+            self.path_index -= 1
+            if self.path_index == 0:
+                self.status = Ant.move.HOME
+        else:
+            self.path.append(self.get_location().choose_path(self.goal))
+            self.path_index += 1
+            if self.get_location().has_task(self.goal):
+                self.status = Ant.move.RETURN
 
     def is_going_home(self):
         return self.status == Ant.move.RETURN

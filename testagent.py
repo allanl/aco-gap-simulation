@@ -67,7 +67,7 @@ class TestAnt(unittest.TestCase):
         self.ant.walk()
         self.assertEqual(self.ant.get_location(), self.agent2)
 
-    def test_is_home(self):
+    def test_is_home_no_walk(self):
         self.assertFalse(self.ant.is_home())
         self.ant.walk()
         self.assertFalse(self.ant.is_home())
@@ -80,6 +80,15 @@ class TestAnt(unittest.TestCase):
         self.agent2.add_task(self.taska)
         self.ant.walk()
         self.assertTrue(self.ant.is_going_home())
+
+    def test_is_home_after_walk(self):
+        self.assertFalse(self.ant.is_going_home())
+        self.agent2.add_task(self.taska)
+        self.ant.walk()
+        self.assertTrue(self.ant.is_going_home())
+        self.assertFalse(self.ant.is_home())
+        self.ant.walk()
+        self.assertTrue(self.ant.is_home())
 
 class TestConnection(unittest.TestCase):
     def setUp(self):
