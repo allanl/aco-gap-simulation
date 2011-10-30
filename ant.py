@@ -17,8 +17,24 @@ class Ant:
         else:
             self.status = Ant.move.SEEK
 
+    def get_path(self):
+        return self.path
+
     def show_path(self):
         return ', '.join([agent.get_name() for agent in self.path])
+
+    def clean_path(self):
+        i = 0
+        while i < len(self.path):
+            node = self.path[i]
+            j = len(self.path) - 1
+            # find last entry in list
+            while j > i:
+                if node == self.path[j]:
+                    self.path = self.path[:i] + self.path[j:]
+                    break
+                j -= 1
+            i += 1
 
     def get_location(self):
         return self.path[self.path_index]
@@ -34,6 +50,7 @@ class Ant:
             self.path.append(self.get_location().choose_path(self.goal))
             self.path_index += 1
             if self.get_location().has_task(self.goal):
+                self.clean_path()
                 self.status = Ant.move.RETURN
 
     def is_going_home(self):

@@ -67,6 +67,65 @@ class TestAnt(unittest.TestCase):
         self.ant.walk()
         self.assertEqual(self.ant.get_location(), self.agent2)
 
+    def test_clean_path(self):
+        self.assertEqual(self.ant.get_location(), self.agent1)
+        self.ant.walk()
+        self.assertEqual(self.ant.get_location(), self.agent2)
+        self.ant.walk()
+        self.assertEqual(self.ant.get_location(), self.agent1)
+        path = [self.agent1, self.agent2, self.agent1]
+        self.assertEqual(self.ant.get_path(), path)
+        self.ant.clean_path()
+        self.assertEqual(self.ant.get_path(), [self.agent1])
+
+    def test_clean_path_start(self):
+        agent1 = self.agent1
+        agent2 = self.agent2
+        agent3 = Agent('agent3', 2)
+        agent4 = Agent('agent4', 2)
+        path = [agent1, agent2, agent3, agent1, agent4, agent3]
+        self.ant.path = path
+        self.assertEqual(self.ant.get_path(), path)
+        self.ant.clean_path()
+        path2 = [agent1, agent4, agent3]
+        self.assertEqual(self.ant.get_path(), path2)
+
+    def test_clean_path_middle(self):
+        agent1 = self.agent1
+        agent2 = self.agent2
+        agent3 = Agent('agent3', 2)
+        agent4 = Agent('agent4', 2)
+        path = [agent1, agent2, agent3, agent4, agent3, agent4]
+        self.ant.path = path
+        self.assertEqual(self.ant.get_path(), path)
+        self.ant.clean_path()
+        path2 = [agent1, agent2, agent3, agent4]
+        self.assertEqual(self.ant.get_path(), path2)
+
+    def test_clean_path_end(self):
+        agent1 = self.agent1
+        agent2 = self.agent2
+        agent3 = Agent('agent3', 2)
+        agent4 = Agent('agent4', 2)
+        path = [agent1, agent2, agent3, agent4, agent3]
+        self.ant.path = path
+        self.assertEqual(self.ant.get_path(), path)
+        self.ant.clean_path()
+        path2 = [agent1, agent2, agent3]
+        self.assertEqual(self.ant.get_path(), path2)
+
+    def test_clean_path_multiple(self):
+        agent1 = self.agent1
+        agent2 = self.agent2
+        agent3 = Agent('agent3', 2)
+        agent4 = Agent('agent4', 2)
+        path = [agent1, agent2, agent3, agent1, agent3, agent4, agent3]
+        self.ant.path = path
+        self.assertEqual(self.ant.get_path(), path)
+        self.ant.clean_path()
+        path2 = [agent1, agent3]
+        self.assertEqual(self.ant.get_path(), path2)
+
     def test_is_home_no_walk(self):
         self.assertFalse(self.ant.is_home())
         self.ant.walk()
