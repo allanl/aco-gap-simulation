@@ -15,7 +15,10 @@ class Agent:
         self.tasks = {}
 
     def add_connection(self, agent):
-        if (not self.has_connection(agent)):
+        # check not already connected
+        # check not same object
+        if (not self.has_connection(agent)) and (not self is agent):
+            # check connections still available
             if len(self.connections) < self.max_connections:
                 self.connections.append(Connection(agent))
                 try:
