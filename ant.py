@@ -1,8 +1,8 @@
 
-from utilities import Enum
+from utilities import enum
 
 class Ant:
-    move = Enum(["SEEK","RETURN","HOME"])
+    move = enum("SEEK","RETURN","HOME")
     index = 0
 
     def __init__(self, node, goal, payload):
