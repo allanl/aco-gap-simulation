@@ -2,7 +2,7 @@
 
 import random
 
-from node import Agent, TooManyConnections
+from node import Node, TooManyConnections
 from ant import Ant
 from taskfactory import TaskFactory
 
@@ -11,11 +11,11 @@ max_connections = 7
 def create_agents(count):
     agents_list = []
     for index in range(count):
-        agents_list.append(Agent('agent %d' % (index), max_connections))
+        agents_list.append(Node('agent %d' % (index), max_connections))
     return agents_list
 
 def print_agents(agents_list):
-    print 'Agents:'
+    print 'Nodes:'
     for index in range(len(agents_list)):
         print agents_list[index]
 

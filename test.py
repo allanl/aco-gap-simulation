@@ -1,18 +1,18 @@
 #!/usr/bin/python
 
 import unittest
-from node import Agent, TooManyConnections
+from node import Node, TooManyConnections
 from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
 
-class TestAgent(unittest.TestCase):
+class TestNode(unittest.TestCase):
     def setUp(self):
         self.max_connections = 2
-        self.agent1 = Agent('agent1', self.max_connections)
-        self.agent2 = Agent('agent2', self.max_connections)
-        self.agent3 = Agent('agent3', self.max_connections)
-        self.agent4 = Agent('agent4', self.max_connections)
+        self.agent1 = Node('agent1', self.max_connections)
+        self.agent2 = Node('agent2', self.max_connections)
+        self.agent3 = Node('agent3', self.max_connections)
+        self.agent4 = Node('agent4', self.max_connections)
 
     def test_connection_list_empty(self):
         self.assertEqual(self.agent1.connections, [])
@@ -61,8 +61,8 @@ class TestAgent(unittest.TestCase):
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3
-        self.agent1 = Agent('agent1', max_connections)
-        self.agent2 = Agent('agent2', max_connections)
+        self.agent1 = Node('agent1', max_connections)
+        self.agent2 = Node('agent2', max_connections)
         self.agent1.add_connection(self.agent2)
         self.taska = TaskA()
         self.ant = Ant(self.agent1, self.taska, None)
@@ -86,8 +86,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_start(self):
         agent1 = self.agent1
         agent2 = self.agent2
-        agent3 = Agent('agent3', 2)
-        agent4 = Agent('agent4', 2)
+        agent3 = Node('agent3', 2)
+        agent4 = Node('agent4', 2)
         path = [agent1, agent2, agent3, agent1, agent4, agent3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -98,8 +98,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_middle(self):
         agent1 = self.agent1
         agent2 = self.agent2
-        agent3 = Agent('agent3', 2)
-        agent4 = Agent('agent4', 2)
+        agent3 = Node('agent3', 2)
+        agent4 = Node('agent4', 2)
         path = [agent1, agent2, agent3, agent4, agent3, agent4]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -110,8 +110,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_end(self):
         agent1 = self.agent1
         agent2 = self.agent2
-        agent3 = Agent('agent3', 2)
-        agent4 = Agent('agent4', 2)
+        agent3 = Node('agent3', 2)
+        agent4 = Node('agent4', 2)
         path = [agent1, agent2, agent3, agent4, agent3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -122,8 +122,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_multiple(self):
         agent1 = self.agent1
         agent2 = self.agent2
-        agent3 = Agent('agent3', 2)
-        agent4 = Agent('agent4', 2)
+        agent3 = Node('agent3', 2)
+        agent4 = Node('agent4', 2)
         path = [agent1, agent2, agent3, agent1, agent3, agent4, agent3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -157,7 +157,7 @@ class TestAnt(unittest.TestCase):
 class TestConnection(unittest.TestCase):
     def setUp(self):
         self.max_connections = 7
-        self.agent1 = Agent('agent1', self.max_connections)
+        self.agent1 = Node('agent1', self.max_connections)
         self.conn1 = Connection(self.agent1)
 
     def test_get_agent(self):
@@ -172,7 +172,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(self.conn1.get_pheromone(task), 6)
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestAgent)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestNode)
     unittest.TextTestRunner(verbosity=2).run(suite)
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAnt)
     unittest.TextTestRunner(verbosity=2).run(suite)

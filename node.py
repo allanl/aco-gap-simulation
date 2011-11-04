@@ -5,7 +5,7 @@ from connection import Connection
 class TooManyConnections(Exception):
     pass
 
-class Agent:
+class Node:
     rand = random.SystemRandom()
 
     def __init__(self, name, max_connections):
@@ -71,7 +71,7 @@ class Agent:
 
     def __str__(self):
         return '''
-Agent: %s
+Node: %s
 Connections: %s
 Max Connections: %d
 Tasks: %s''' % (
