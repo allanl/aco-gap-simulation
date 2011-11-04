@@ -165,11 +165,11 @@ class TestConnection(unittest.TestCase):
 
     def test_add_pheromone(self):
         task = TaskA()
-        self.assertEqual(self.conn1.get_pheromone(task), 0)
+        self.assertEqual(self.conn1.get_pheromone(task), 1)
         self.conn1.add_pheromone(task, 3)
-        self.assertEqual(self.conn1.get_pheromone(task), 3)
+        self.assertEqual(self.conn1.get_pheromone(task), 4)
         self.conn1.add_pheromone(task, 3)
-        self.assertEqual(self.conn1.get_pheromone(task), 6)
+        self.assertEqual(self.conn1.get_pheromone(task), 7)
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestNode)
