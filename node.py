@@ -84,10 +84,5 @@ class Node:
         return self.name
 
     def __str__(self):
-        return '''
-Node: %s
-Connections: %s
-Max Connections: %d
-Tasks: %s''' % (
-        self.name, self.get_connection_str(),
-        self.max_connections, self.tasks)
+        return '''Node: %s
+Tasks: %s''' % (self.name, self.tasks)

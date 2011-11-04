@@ -51,6 +51,7 @@ if __name__ == '__main__':
             except TooManyConnections:
                 break
 
+    print ""
     print_nodes(nodes)
     print ""
     display_adjacency_matrix(nodes, 'z')
