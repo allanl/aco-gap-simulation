@@ -35,6 +35,12 @@ class Node:
             return True
         return False
 
+    def get_connection(self, node):
+        for conn in self.connections:
+            if (conn.get_node() == node):
+                return conn
+        return None
+
     def remove_connection(self, node):
         count = 0
         while (count < len(self.connections)):
@@ -65,6 +71,14 @@ class Node:
         return ', '.join(
                 [conn.get_node().get_name() for conn in self.connections]
                 )
+
+    def get_conn_pheromones(self, onode, task):
+        conn = self.get_connection(onode)
+        if conn is not None:
+            return conn.get_pheromone(task)
+        else:
+            return 0
+        #self.get_connection(onode).get_pheromone(task))
 
     def get_name(self):
         return self.name

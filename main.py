@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import random
+import sys
 
 from node import Node, TooManyConnections
 from ant import Ant
@@ -27,6 +28,13 @@ def print_connections(nodes_list):
             nodes_list[index].get_connection_str()
             )
 
+def display_adjacency_matrix(nodes_list, task):
+    for node in nodes_list:
+        sys.stdout.write('%s,' % (node.get_name()))
+        sys.stdout.write(','.join([repr(node.get_conn_pheromones(onode, task))
+            for onode in nodes_list]))
+        sys.stdout.write('\n')
+
 def link(node1, node2):
     node1.add_connection(node2)
 
@@ -44,7 +52,8 @@ if __name__ == '__main__':
                 break
 
     print_nodes(nodes)
-    print_connections(nodes)
+    print ""
+    display_adjacency_matrix(nodes, 'z')
 
     ants = [Ant(nodes[0], TaskFactory.get_task('a'), None)]
     ants.append(Ant(nodes[1], TaskFactory.get_task('b'), None))
