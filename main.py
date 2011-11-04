@@ -2,7 +2,7 @@
 
 import random
 
-from agent import Agent, TooManyConnections
+from node import Agent, TooManyConnections
 from ant import Ant
 from taskfactory import TaskFactory
 

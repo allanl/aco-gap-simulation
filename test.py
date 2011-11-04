@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import unittest
-from agent import Agent, TooManyConnections
+from node import Agent, TooManyConnections
 from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
