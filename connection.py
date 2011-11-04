@@ -1,11 +1,11 @@
 
 class Connection(object):
-    def __init__(self, agent):
-        self.agent = agent
+    def __init__(self, node):
+        self.node = node
         self.pheromone = {}
 
-    def get_agent(self):
-        return self.agent
+    def get_node(self):
+        return self.node
 
     def add_pheromone(self, task, quantity):
         if (task.__class__ in self.pheromone):

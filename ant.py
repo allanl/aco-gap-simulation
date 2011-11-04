@@ -21,7 +21,7 @@ class Ant:
         return self.path
 
     def show_path(self):
-        return ', '.join([agent.get_name() for agent in self.path])
+        return ', '.join([node.get_name() for node in self.path])
 
     def clean_path(self):
         i = 0

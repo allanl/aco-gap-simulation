@@ -14,33 +14,33 @@ class Node:
         self.max_connections = max_connections
         self.tasks = {}
 
-    def add_connection(self, agent):
+    def add_connection(self, node):
         # check not already connected
         # check not same object
-        if (not self.has_connection(agent)) and (not self is agent):
+        if (not self.has_connection(node)) and (not self is node):
             # check connections still available
             if len(self.connections) < self.max_connections:
-                self.connections.append(Connection(agent))
+                self.connections.append(Connection(node))
                 try:
-                    agent.add_connection(self)
+                    node.add_connection(self)
                 except TooManyConnections:
                     # other side connections already full
-                    self.remove_connection(agent)
+                    self.remove_connection(node)
                     raise
             else:
                 raise TooManyConnections
 
-    def has_connection(self, agent):
-        if (agent in [conn.get_agent() for conn in self.connections]):
+    def has_connection(self, node):
+        if (node in [conn.get_node() for conn in self.connections]):
             return True
         return False
 
-    def remove_connection(self, agent):
+    def remove_connection(self, node):
         count = 0
         while (count < len(self.connections)):
-            if (self.connections[count].get_agent() == agent):
+            if (self.connections[count].get_node() == node):
                 del self.connections[count]
-                agent.remove_connection(self)
+                node.remove_connection(self)
                 break
             count += 1
 
@@ -54,16 +54,16 @@ class Node:
             return False
 
     def choose_path(self, task):
-        agent = None
+        node = None
         if (self.connections != []):
             index = random.randint(0, len(self.connections) - 1)
-            agent = self.connections[index].get_agent()
+            node = self.connections[index].get_node()
 
-        return agent
+        return node
 
     def get_connection_str(self):
         return ', '.join(
-                [conn.get_agent().get_name() for conn in self.connections]
+                [conn.get_node().get_name() for conn in self.connections]
                 )
 
     def get_name(self):

@@ -8,46 +8,46 @@ from taskfactory import TaskFactory
 
 max_connections = 7
 
-def create_agents(count):
-    agents_list = []
+def create_nodes(count):
+    nodes_list = []
     for index in range(count):
-        agents_list.append(Node('agent %d' % (index), max_connections))
-    return agents_list
+        nodes_list.append(Node('node %d' % (index), max_connections))
+    return nodes_list
 
-def print_agents(agents_list):
+def print_nodes(nodes_list):
     print 'Nodes:'
-    for index in range(len(agents_list)):
-        print agents_list[index]
+    for index in range(len(nodes_list)):
+        print nodes_list[index]
 
-def print_connections(agents_list):
+def print_connections(nodes_list):
     print 'Connections:'
-    for index in range(len(agents_list)):
+    for index in range(len(nodes_list)):
         print '%s - %s' % (
-            agents_list[index].get_name(),
-            agents_list[index].get_connection_str()
+            nodes_list[index].get_name(),
+            nodes_list[index].get_connection_str()
             )
 
-def link(agent1, agent2):
-    agent1.add_connection(agent2)
+def link(node1, node2):
+    node1.add_connection(node2)
 
 if __name__ == '__main__':
-    agents = create_agents(10)
+    nodes = create_nodes(10)
 
     random.SystemRandom()
-    for x in range(len(agents)):
+    for x in range(len(nodes)):
         for y in range(max_connections):
-            other = random.randint(0, len(agents) - 1)
+            other = random.randint(0, len(nodes) - 1)
             print "link %d,%d" % (x, other)
             try:
-                link(agents[x], agents[other])
+                link(nodes[x], nodes[other])
             except TooManyConnections:
                 break
 
-    print_agents(agents)
-    print_connections(agents)
+    print_nodes(nodes)
+    print_connections(nodes)
 
-    ants = [Ant(agents[0], TaskFactory.get_task('a'), None)]
-    ants.append(Ant(agents[1], TaskFactory.get_task('b'), None))
+    ants = [Ant(nodes[0], TaskFactory.get_task('a'), None)]
+    ants.append(Ant(nodes[1], TaskFactory.get_task('b'), None))
     for ant in ants:
         for f in range(10): ant.walk()
         print ant
