@@ -1,13 +1,16 @@
 from task import *
+from utilities import enum
 
 class TaskFactory(object):
+    tasks = enum("TASKA", "TASKB", "TASKC")
+
     @staticmethod
-    def get_task(name):
-        if (name == 'a'):
+    def get_task(task):
+        if (task == TaskFactory.tasks.TASKA):
             return TaskA()
-        elif (name == 'b'):
+        elif (task == TaskFactory.tasks.TASKB):
             return TaskB()
-        elif (name == 'c'):
+        elif (task == TaskFactory.tasks.TASKC):
             return TaskC()
         else:
             raise NotImplementedError

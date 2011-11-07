@@ -5,6 +5,7 @@ from node import Node, TooManyConnections
 from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
+from taskfactory import TaskFactory
 
 class TestNode(unittest.TestCase):
     def setUp(self):
@@ -171,10 +172,21 @@ class TestConnection(unittest.TestCase):
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 7)
 
+class TestTaskFactory(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_task(self):
+        isinstance(TaskFactory.get_task(TaskFactory.tasks.TASKA), TaskA)
+        isinstance(TaskFactory.get_task(TaskFactory.tasks.TASKA), TaskB)
+        isinstance(TaskFactory.get_task(TaskFactory.tasks.TASKA), TaskC)
+
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestNode)
     unittest.TextTestRunner(verbosity=2).run(suite)
     suite = unittest.TestLoader().loadTestsFromTestCase(TestAnt)
     unittest.TextTestRunner(verbosity=2).run(suite)
     suite = unittest.TestLoader().loadTestsFromTestCase(TestConnection)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestTaskFactory)
     unittest.TextTestRunner(verbosity=2).run(suite)
