@@ -51,6 +51,11 @@ if __name__ == '__main__':
             except TooManyConnections:
                 break
 
+    nodes[5].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKA))
+    nodes[3].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKA))
+    nodes[8].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKB))
+    nodes[6].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKB))
+
     print ""
     print_nodes(nodes)
     print ""
@@ -59,6 +64,8 @@ if __name__ == '__main__':
     ants = [Ant(nodes[0], TaskFactory.get_task(TaskFactory.tasks.TASKA), None)]
     ants.append(Ant(nodes[1], TaskFactory.get_task(TaskFactory.tasks.TASKB), None))
     for ant in ants:
-        for f in range(10): ant.walk()
+        for f in range(100): ant.walk()
         print ant
         ant.goal.process(None)
+
+    display_adjacency_matrix(nodes, 'z')
