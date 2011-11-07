@@ -166,11 +166,11 @@ class TestConnection(unittest.TestCase):
 
     def test_add_pheromone(self):
         task = TaskA()
-        self.assertEqual(self.conn1.get_pheromone(task), 1)
+        self.assertEqual(self.conn1.get_pheromone(task), 1000)
         self.conn1.add_pheromone(task, 3)
-        self.assertEqual(self.conn1.get_pheromone(task), 4)
+        self.assertEqual(self.conn1.get_pheromone(task), 1033)
         self.conn1.add_pheromone(task, 3)
-        self.assertEqual(self.conn1.get_pheromone(task), 7)
+        self.assertEqual(self.conn1.get_pheromone(task), 1066)
 
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):

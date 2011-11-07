@@ -1,6 +1,6 @@
 
 class Connection(object):
-    base_pheromone = 1
+    base_pheromone = 1000
 
     def __init__(self, node):
         self.node = node
@@ -9,7 +9,8 @@ class Connection(object):
     def get_node(self):
         return self.node
 
-    def add_pheromone(self, task, quantity):
+    def add_pheromone(self, task, path_length):
+        quantity = 100 / path_length
         if (task.__class__ in self.pheromone):
             self.pheromone[task.__class__] += quantity
         else:
