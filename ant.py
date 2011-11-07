@@ -35,6 +35,7 @@ class Ant:
                     break
                 j -= 1
             i += 1
+        self.path_index = len(self.path) - 1
 
     def get_location(self):
         return self.path[self.path_index]
