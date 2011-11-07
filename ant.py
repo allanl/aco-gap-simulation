@@ -39,14 +39,23 @@ class Ant:
     def get_location(self):
         return self.path[self.path_index]
 
+    def lay_pheromones(self):
+        path_length = len(self.path)
+        self.path[self.path_index].add_conn_pheromones(self.path[self.path_index
+            + 1], self.goal, path_length)
+
     def walk(self):
         if self.status == Ant.move.HOME:
+            # do nothing
             pass
         elif self.status == Ant.move.RETURN:
+            # move back one node
             self.path_index -= 1
+            self.lay_pheromones()
             if self.path_index == 0:
                 self.status = Ant.move.HOME
         else:
+            # keep searching
             self.path.append(self.get_location().choose_path(self.goal))
             self.path_index += 1
             if self.get_location().has_task(self.goal):

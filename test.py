@@ -59,6 +59,13 @@ class TestNode(unittest.TestCase):
         self.node1.add_connection(self.node1)
         self.assertFalse(self.node1.has_connection(self.node1))
 
+    def test_set_get_pheromones(self):
+        task = TaskA()
+        self.node1.add_connection(self.node2)
+        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 1000)
+        self.node1.add_conn_pheromones(self.node2, task, 3)
+        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 1033)
+
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3

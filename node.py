@@ -72,6 +72,11 @@ class Node:
                 [conn.get_node().get_name() for conn in self.connections]
                 )
 
+    def add_conn_pheromones(self, onode, task, path_length):
+        conn = self.get_connection(onode)
+        if conn is not None:
+            conn.add_pheromone(task, path_length)
+
     def get_conn_pheromones(self, onode, task):
         conn = self.get_connection(onode)
         if conn is not None:
