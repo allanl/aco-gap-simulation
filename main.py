@@ -68,4 +68,9 @@ if __name__ == '__main__':
         print ant
         ant.goal.process(None)
 
-    display_adjacency_matrix(nodes, 'z')
+    print 'adjacency matrix - task A'
+    display_adjacency_matrix(nodes,
+            TaskFactory.get_task(TaskFactory.tasks.TASKA))
+    print 'adjacency matrix - task B'
+    display_adjacency_matrix(nodes,
+            TaskFactory.get_task(TaskFactory.tasks.TASKB))
