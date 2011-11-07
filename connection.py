@@ -1,5 +1,7 @@
 
 class Connection(object):
+    base_pheromone = 1
+
     def __init__(self, node):
         self.node = node
         self.pheromone = {}
@@ -11,7 +13,7 @@ class Connection(object):
         if (task.__class__ in self.pheromone):
             self.pheromone[task.__class__] += quantity
         else:
-            self.pheromone[task.__class__] = 1 + quantity
+            self.pheromone[task.__class__] = Connection.base_pheromone + quantity
 
     def evaporate_pheromone(self):
         pass
@@ -20,4 +22,4 @@ class Connection(object):
         if (task.__class__ in self.pheromone):
             return self.pheromone[task.__class__]
         else:
-            return 1
+            return Connection.base_pheromone
