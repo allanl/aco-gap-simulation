@@ -51,10 +51,10 @@ class Node:
             count += 1
 
     def add_task(self, task):
-        self.tasks[task] = 1
+        self.tasks[task.__class__] = 1
 
     def has_task(self, task):
-        if self.tasks.get(task, 0) == 1:
+        if self.tasks.get(task.__class__, 0) == 1:
             return True
         else:
             return False
