@@ -62,7 +62,29 @@ class Node:
     def choose_path(self, task):
         node = None
         if (self.connections != []):
-            index = random.randint(0, len(self.connections) - 1)
+            weightings = [conn.get_pheromone(task) for conn in self.connections]
+            total_weight = sum(weightings)
+            number = random.randint(0, total_weight)
+
+            count = 0
+            cumulative_weight = 0
+            while count < len(weightings):
+                if cumulative_weight > number:
+                    # index correct as set below
+                    # in last loop
+                    break
+                elif cumulative_weight == number:
+                    index = count
+                    break
+                cumulative_weight += weightings[count]
+                index = count
+                count += 1
+
+            #print "weightings = %s" % (weightings)
+            #print "cumulative_weight = %s" % (cumulative_weight)
+            #print "total_weight = %s" % (total_weight)
+            #print "number = %s" % (number)
+            #print "index = %s" % (index)
             node = self.connections[index].get_node()
 
         return node
