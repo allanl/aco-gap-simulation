@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from itertools import chain
 import random
 import sys
 
@@ -14,6 +15,9 @@ def create_nodes(count):
     for index in range(count):
         nodes_list.append(Node('node %d' % (index), max_connections))
     return nodes_list
+
+def create_ants(count, node, task, payload):
+    return [Ant(node, task, payload) for index in range(count)]
 
 def print_nodes(nodes_list):
     print 'Nodes:'
@@ -59,18 +63,21 @@ if __name__ == '__main__':
     print ""
     print_nodes(nodes)
     print ""
-    display_adjacency_matrix(nodes, 'z')
 
-    ants = [Ant(nodes[0], TaskFactory.get_task(TaskFactory.tasks.TASKA), None)]
-    ants.append(Ant(nodes[1], TaskFactory.get_task(TaskFactory.tasks.TASKB), None))
-    for ant in ants:
-        for f in range(100): ant.walk()
-        print ant
-        ant.goal.process(None)
-
-    print 'adjacency matrix - task A'
-    display_adjacency_matrix(nodes,
-            TaskFactory.get_task(TaskFactory.tasks.TASKA))
-    print 'adjacency matrix - task B'
-    display_adjacency_matrix(nodes,
-            TaskFactory.get_task(TaskFactory.tasks.TASKB))
+    for i in range(101):
+        for node in nodes:
+            ants = chain(create_ants(10, node,
+                TaskFactory.get_task(TaskFactory.tasks.TASKA), None),
+                create_ants(10, node,
+                TaskFactory.get_task(TaskFactory.tasks.TASKB), None),
+                create_ants(10, node,
+                TaskFactory.get_task(TaskFactory.tasks.TASKC), None))
+            for ant in ants:
+                for f in range(100): ant.walk()
+        if i % 10 == 0:
+            for task in [TaskFactory.tasks.TASKA,
+                    TaskFactory.tasks.TASKB,
+                    TaskFactory.tasks.TASKC]:
+                print 'adjacency matrix - task %s - round %d' % (task, i)
+                display_adjacency_matrix(nodes,
+                    TaskFactory.get_task(task))
