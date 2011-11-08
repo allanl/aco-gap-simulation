@@ -54,6 +54,14 @@ class TestNode(unittest.TestCase):
         self.node1.add_task(task)
         self.assertTrue(self.node1.has_task(task))
 
+    def test_set_check_task_instance(self):
+        task = TaskA()
+        self.assertFalse(self.node1.has_task(task))
+        self.node1.add_task(task)
+        self.assertTrue(self.node1.has_task(task))
+        taska = TaskA()
+        self.assertTrue(self.node1.has_task(taska))
+
     def test_no_connect_to_self(self):
         self.assertFalse(self.node1.has_connection(self.node1))
         self.node1.add_connection(self.node1)
