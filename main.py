@@ -13,7 +13,7 @@ max_connections = 7
 def create_nodes(count):
     nodes_list = []
     for index in range(count):
-        nodes_list.append(Node('node %d' % (index), max_connections))
+        nodes_list.append(Node('n%d' % (index), max_connections))
     return nodes_list
 
 def create_ants(count, node, task, payload):
@@ -32,12 +32,19 @@ def print_connections(nodes_list):
             nodes_list[index].get_connection_str()
             )
 
-def display_adjacency_matrix(nodes_list, task):
-    for node in nodes_list:
-        sys.stdout.write('%s,' % (node.get_name()))
-        sys.stdout.write(','.join([repr(node.get_conn_pheromones(onode, task))
+# better performance
+def create_adjacency_matrix(nodes_list, task):
+    return ['%s,%s' % (node.get_name(),
+            ','.join([repr(node.get_conn_pheromones(onode, task))
             for onode in nodes_list]))
-        sys.stdout.write('\n')
+            for node in nodes_list]
+
+# better memory?
+def create_adjacency_matrix_alt(nodes_list, task):
+    for node in nodes_list:
+        yield '%s,%s' % (node.get_name(),
+            ','.join([repr(node.get_conn_pheromones(onode, task))
+            for onode in nodes_list]))
 
 def link(node1, node2):
     node1.add_connection(node2)
@@ -80,5 +87,6 @@ if __name__ == '__main__':
                     TaskFactory.tasks.TASKB,
                     TaskFactory.tasks.TASKC]:
                 print 'adjacency matrix - task %s - round %d' % (task, i)
-                display_adjacency_matrix(nodes,
-                    TaskFactory.get_task(task))
+                for line in create_adjacency_matrix(nodes,
+                    TaskFactory.get_task(task)):
+                    print 'r%d,%s' % (i, line)
