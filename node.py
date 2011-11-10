@@ -107,6 +107,10 @@ class Node:
             return 0
         #self.get_connection(onode).get_pheromone(task))
 
+    def complete_round(self):
+        for conn in self.connections:
+            conn.evaporate_pheromone() 
+
     def get_name(self):
         return self.name
 

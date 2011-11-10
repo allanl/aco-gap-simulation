@@ -74,6 +74,7 @@ if __name__ == '__main__':
                 TaskFactory.get_task(TaskFactory.tasks.TASKC), None))
             for ant in ants:
                 for f in range(100): ant.walk()
+            node.complete_round()
         if i % 10 == 0:
             for task in [TaskFactory.tasks.TASKA,
                     TaskFactory.tasks.TASKB,

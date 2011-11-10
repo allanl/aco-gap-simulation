@@ -187,6 +187,19 @@ class TestConnection(unittest.TestCase):
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 1066)
 
+    def test_evaporate_pheromone(self):
+        task = TaskA()
+        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+        # initialise pheromone
+        self.conn1.add_pheromone(task, 1)
+        self.assertEqual(self.conn1.get_pheromone(task), 1100)
+        # 10% evaporation -> 1100 * .9 = 990
+        self.conn1.evaporate_pheromone()
+        self.assertEqual(self.conn1.get_pheromone(task), 990)
+        # 10% evaporation -> 990 * .9 = 891
+        self.conn1.evaporate_pheromone()
+        self.assertEqual(self.conn1.get_pheromone(task), 891)
+
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
         pass
