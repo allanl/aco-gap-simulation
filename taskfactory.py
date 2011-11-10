@@ -5,6 +5,12 @@ class TaskFactory(object):
     tasks = enum("TASKA", "TASKB", "TASKC")
 
     @staticmethod
+    def get_task_names():
+        return [TaskFactory.tasks.TASKA,
+            TaskFactory.tasks.TASKB,
+            TaskFactory.tasks.TASKC]
+
+    @staticmethod
     def get_task(task):
         if (task == TaskFactory.tasks.TASKA):
             return TaskA()

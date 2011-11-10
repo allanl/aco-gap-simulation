@@ -20,6 +20,9 @@ class Ant:
     def get_path(self):
         return self.path
 
+    def get_path_length(self):
+        return len(self.path)
+
     def show_path(self):
         return ', '.join([node.get_name() for node in self.path])
 

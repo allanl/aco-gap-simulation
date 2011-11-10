@@ -50,7 +50,9 @@ def link(node1, node2):
     node1.add_connection(node2)
 
 if __name__ == '__main__':
-    nodes = create_nodes(10)
+    number_of_ants = 10
+    number_of_nodes = 10
+    nodes = create_nodes(number_of_nodes)
 
     random.SystemRandom()
     for x in range(len(nodes)):
@@ -73,14 +75,17 @@ if __name__ == '__main__':
 
     for i in range(101):
         for node in nodes:
-            ants = chain(create_ants(10, node,
-                TaskFactory.get_task(TaskFactory.tasks.TASKA), None),
-                create_ants(10, node,
-                TaskFactory.get_task(TaskFactory.tasks.TASKB), None),
-                create_ants(10, node,
-                TaskFactory.get_task(TaskFactory.tasks.TASKC), None))
-            for ant in ants:
-                for f in range(100): ant.walk()
+            for task in TaskFactory.get_task_names():
+                ants = create_ants(number_of_ants, node,
+                    TaskFactory.get_task(task), None)
+                for ant in ants:
+                    for f in range(100): ant.walk()
+                average = lambda l: sum(l, 0.0) / len(l)
+                ant_path_lengths = [ant.get_path_length() for ant in ants]
+                print 'r%d,path_length,%s,%s,%s' % (i, node.get_name(), task,
+                    ','.join(str(length) for length in ant_path_lengths))
+                print 'r%d,path_average,%s,%s,%f' % (i, node.get_name(), task,
+                    average(ant_path_lengths))
             node.complete_round()
         if i % 10 == 0:
             for task in [TaskFactory.tasks.TASKA,
