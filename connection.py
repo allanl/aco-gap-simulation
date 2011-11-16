@@ -21,9 +21,9 @@ class Connection(object):
             self.pheromone[task.__class__] = Connection.base_pheromone + quantity
 
     def evaporate_pheromone(self):
-        for pheromone in self.pheromone:
-            self.pheromone[pheromone] = int((1 - Connection.evaporation_rate) *
-                                        self.pheromone[pheromone])
+        for task in self.pheromone:
+            self.pheromone[task] = int((1 - Connection.evaporation_rate) *
+                                        self.pheromone[task])
 
     def get_pheromone(self, task):
         if (task.__class__ in self.pheromone):
