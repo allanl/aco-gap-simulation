@@ -91,7 +91,7 @@ if __name__ == '__main__':
             for task in [TaskFactory.tasks.TASKA,
                     TaskFactory.tasks.TASKB,
                     TaskFactory.tasks.TASKC]:
-                print 'adjacency matrix - task %s - round %d' % (task, i)
-                for line in create_adjacency_matrix(nodes,
-                    TaskFactory.get_task(task)):
+                task = TaskFactory.get_task(task)
+                print 'adjacency matrix - %s - round %d' % (task, i)
+                for line in create_adjacency_matrix(nodes, task):
                     print 'r%d,%s' % (i, line)
