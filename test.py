@@ -172,6 +172,9 @@ class TestAnt(unittest.TestCase):
         self.ant.walk()
         self.assertTrue(self.ant.is_home())
 
+    def test_get_goal(self):
+        self.assertEqual(self.ant.get_goal(), self.taska)
+
 class TestConnection(unittest.TestCase):
     def setUp(self):
         self.max_connections = 7

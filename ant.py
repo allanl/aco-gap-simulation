@@ -20,6 +20,9 @@ class Ant:
     def get_path(self):
         return self.path
 
+    def get_goal(self):
+        return self.goal
+
     def get_path_length(self):
         return len(self.path)
 
