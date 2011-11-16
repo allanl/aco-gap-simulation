@@ -89,9 +89,7 @@ if __name__ == '__main__':
                     average(ant_path_lengths))
             node.complete_round()
         if i % 10 == 0:
-            for task in [TaskFactory.tasks.TASKA,
-                    TaskFactory.tasks.TASKB,
-                    TaskFactory.tasks.TASKC]:
+            for task in TaskFactory.get_task_names():
                 task = TaskFactory.get_task(task)
                 print 'adjacency matrix - %s - round %d' % (task, i)
                 for line in create_adjacency_matrix(nodes, task):
