@@ -74,6 +74,12 @@ if __name__ == '__main__':
     print_nodes(nodes)
     print ""
 
+    # initialise pheromones
+    for task in TaskFactory.get_task_names():
+        task = TaskFactory.get_task(task)
+        for node in nodes:
+            node.initialise_pheromones(task)
+
     for i in range(101):
         for node in nodes:
             for task in TaskFactory.get_task_names():

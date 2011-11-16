@@ -10,6 +10,9 @@ class Connection(object):
     def get_node(self):
         return self.node
 
+    def initialise_pheromone(self, task):
+        self.pheromone[task.__class__] = Connection.base_pheromone
+
     def add_pheromone(self, task, path_length):
         quantity = 100 / path_length
         if (task.__class__ in self.pheromone):
