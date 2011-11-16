@@ -61,6 +61,8 @@ class Ant:
             self.lay_pheromones()
             if self.path_index == 0:
                 self.status = Ant.move.HOME
+                # pass ant to node on return home
+                self.get_location().return_home(self)
         else:
             # keep searching
             self.path.append(self.get_location().choose_path(self.goal))

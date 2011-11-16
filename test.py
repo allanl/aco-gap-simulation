@@ -76,6 +76,15 @@ class TestNode(unittest.TestCase):
         self.node1.add_conn_pheromones(self.node2, task, 3)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 1033)
 
+    def test_initialise_pheromones(self):
+        raise NotImplementedError
+
+    def test_evaporate_pheromones(self):
+        raise NotImplementedError
+
+    def test_return_home(self):
+        raise NotImplementedError
+
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3

@@ -11,6 +11,7 @@ class Node:
     def __init__(self, name, max_connections, erate):
         self.name = name
         self.connections = []
+        self.best_path = {}
         self.max_connections = max_connections
         self.evaporation_rate = erate
         self.tasks = {}
@@ -118,6 +119,19 @@ class Node:
     def complete_round(self):
         for conn in self.connections:
             conn.evaporate_pheromone() 
+
+    def return_home(self, ant):
+        new_best = 0
+        task = ant.get_goal().__class__
+        if task in self.best_path:
+            if len(self.best_path[task]) > ant.get_path_length():
+                new_best = 1
+        else:
+            new_best = 1
+
+        if new_best:
+            print '%s %s new_best: %d' % (self.get_name(), task, ant.get_path_length())
+            self.best_path[task] = ant.get_path()
 
     def get_name(self):
         return self.name
