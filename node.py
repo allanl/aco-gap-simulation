@@ -89,6 +89,9 @@ class Node:
 
         return node
 
+    def get_connections(self):
+        return self.connections
+
     def get_connection_str(self):
         return ', '.join(
                 [conn.get_node().get_name() for conn in self.connections]

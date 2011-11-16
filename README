@@ -1,2 +1,5 @@
 This project is a prototype simulation of solving the Generalised Assignment
 Problem using Ant Colony Optimisation algorithms programmed in Python
+
+Requirements:
+pydot

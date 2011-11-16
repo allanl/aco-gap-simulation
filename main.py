@@ -4,6 +4,7 @@ from itertools import chain
 import random
 import sys
 
+from graph import graph_pheromones
 from node import Node, TooManyConnections
 from ant import Ant
 from taskfactory import TaskFactory
@@ -95,3 +96,5 @@ if __name__ == '__main__':
                 print 'adjacency matrix - %s - round %d' % (task, i)
                 for line in create_adjacency_matrix(nodes, task):
                     print 'r%d,%s' % (i, line)
+
+    graph_pheromones(nodes, TaskFactory.get_task(TaskFactory.tasks.TASKA))
