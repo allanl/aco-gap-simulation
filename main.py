@@ -97,4 +97,6 @@ if __name__ == '__main__':
                 for line in create_adjacency_matrix(nodes, task):
                     print 'r%d,%s' % (i, line)
 
-    graph_pheromones(nodes, TaskFactory.get_task(TaskFactory.tasks.TASKA))
+    for task in TaskFactory.get_task_names():
+        task = TaskFactory.get_task(task)
+        graph_pheromones(nodes, task, 'graph%s' % (str(task).lower()))
