@@ -8,10 +8,11 @@ class TooManyConnections(Exception):
 class Node:
     rand = random.SystemRandom()
 
-    def __init__(self, name, max_connections):
+    def __init__(self, name, max_connections, erate):
         self.name = name
         self.connections = []
         self.max_connections = max_connections
+        self.evaporation_rate = erate
         self.tasks = {}
 
     def add_connection(self, node):
@@ -20,7 +21,7 @@ class Node:
         if (not self.has_connection(node)) and (not self is node):
             # check connections still available
             if len(self.connections) < self.max_connections:
-                self.connections.append(Connection(node))
+                self.connections.append(Connection(node, self.evaporation_rate))
                 try:
                     node.add_connection(self)
                 except TooManyConnections:

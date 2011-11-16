@@ -11,10 +11,10 @@ from taskfactory import TaskFactory
 
 max_connections = 7
 
-def create_nodes(count):
+def create_nodes(count, erate):
     nodes_list = []
     for index in range(count):
-        nodes_list.append(Node('n%d' % (index), max_connections))
+        nodes_list.append(Node('n%d' % (index), max_connections, erate))
     return nodes_list
 
 def create_ants(count, node, task, payload):
@@ -53,7 +53,9 @@ def link(node1, node2):
 if __name__ == '__main__':
     number_of_ants = 10
     number_of_nodes = 10
-    nodes = create_nodes(number_of_nodes)
+    evaporation_rate = 0.1
+
+    nodes = create_nodes(number_of_nodes, evaporation_rate)
 
     random.SystemRandom()
     for x in range(len(nodes)):

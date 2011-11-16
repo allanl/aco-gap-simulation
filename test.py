@@ -7,13 +7,15 @@ from connection import Connection
 from task import TaskA, TaskB, TaskC
 from taskfactory import TaskFactory
 
+evaporation_rate = 0.1
+
 class TestNode(unittest.TestCase):
     def setUp(self):
         self.max_connections = 2
-        self.node1 = Node('node1', self.max_connections)
-        self.node2 = Node('node2', self.max_connections)
-        self.node3 = Node('node3', self.max_connections)
-        self.node4 = Node('node4', self.max_connections)
+        self.node1 = Node('node1', self.max_connections, evaporation_rate)
+        self.node2 = Node('node2', self.max_connections, evaporation_rate)
+        self.node3 = Node('node3', self.max_connections, evaporation_rate)
+        self.node4 = Node('node4', self.max_connections, evaporation_rate)
 
     def test_connection_list_empty(self):
         self.assertEqual(self.node1.connections, [])
@@ -77,8 +79,8 @@ class TestNode(unittest.TestCase):
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3
-        self.node1 = Node('node1', max_connections)
-        self.node2 = Node('node2', max_connections)
+        self.node1 = Node('node1', max_connections, evaporation_rate)
+        self.node2 = Node('node2', max_connections, evaporation_rate)
         self.node1.add_connection(self.node2)
         self.taska = TaskA()
         self.ant = Ant(self.node1, self.taska, None)
@@ -102,8 +104,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_start(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2)
-        node4 = Node('node4', 2)
+        node3 = Node('node3', 2, evaporation_rate)
+        node4 = Node('node4', 2, evaporation_rate)
         path = [node1, node2, node3, node1, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -114,8 +116,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_middle(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2)
-        node4 = Node('node4', 2)
+        node3 = Node('node3', 2, evaporation_rate)
+        node4 = Node('node4', 2, evaporation_rate)
         path = [node1, node2, node3, node4, node3, node4]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -126,8 +128,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_end(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2)
-        node4 = Node('node4', 2)
+        node3 = Node('node3', 2, evaporation_rate)
+        node4 = Node('node4', 2, evaporation_rate)
         path = [node1, node2, node3, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -138,8 +140,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_multiple(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2)
-        node4 = Node('node4', 2)
+        node3 = Node('node3', 2, evaporation_rate)
+        node4 = Node('node4', 2, evaporation_rate)
         path = [node1, node2, node3, node1, node3, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -173,8 +175,8 @@ class TestAnt(unittest.TestCase):
 class TestConnection(unittest.TestCase):
     def setUp(self):
         self.max_connections = 7
-        self.node1 = Node('node1', self.max_connections)
-        self.conn1 = Connection(self.node1)
+        self.node1 = Node('node1', self.max_connections, evaporation_rate)
+        self.conn1 = Connection(self.node1, evaporation_rate)
 
     def test_get_node(self):
         self.assertEqual(self.node1, self.conn1.get_node())
@@ -189,16 +191,22 @@ class TestConnection(unittest.TestCase):
 
     def test_evaporate_pheromone(self):
         task = TaskA()
+        # before initialise
         self.assertEqual(self.conn1.get_pheromone(task), 1000)
-        # initialise pheromone
-        self.conn1.add_pheromone(task, 1)
-        self.assertEqual(self.conn1.get_pheromone(task), 1100)
-        # 10% evaporation -> 1100 * .9 = 990
+
+        # initialise
+        self.conn1.initialise_pheromone(task)
+        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+
+        # evaporate 1
+        pheromone = 1000 * (1 - evaporation_rate)
         self.conn1.evaporate_pheromone()
-        self.assertEqual(self.conn1.get_pheromone(task), 990)
-        # 10% evaporation -> 990 * .9 = 891
+        self.assertEqual(self.conn1.get_pheromone(task), pheromone)
+
+        # evaporate 2
+        pheromone = pheromone * (1 - evaporation_rate)
         self.conn1.evaporate_pheromone()
-        self.assertEqual(self.conn1.get_pheromone(task), 891)
+        self.assertEqual(self.conn1.get_pheromone(task), pheromone)
 
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):

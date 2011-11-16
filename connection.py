@@ -1,10 +1,10 @@
 
 class Connection(object):
     base_pheromone = 1000
-    evaporation_rate = 0.1
 
-    def __init__(self, node):
+    def __init__(self, node, erate):
         self.node = node
+        self.evaporation_rate = erate
         self.pheromone = {}
 
     def get_node(self):
@@ -22,7 +22,7 @@ class Connection(object):
 
     def evaporate_pheromone(self):
         for task in self.pheromone:
-            self.pheromone[task] = int((1 - Connection.evaporation_rate) *
+            self.pheromone[task] = int((1 - self.evaporation_rate) *
                                         self.pheromone[task])
 
     def get_pheromone(self, task):
