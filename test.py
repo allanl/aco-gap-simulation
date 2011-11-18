@@ -15,10 +15,10 @@ def evaporate_pheromones(pheromones):
 class TestNode(unittest.TestCase):
     def setUp(self):
         self.max_connections = 2
-        self.node1 = Node('node1', self.max_connections, evaporation_rate)
-        self.node2 = Node('node2', self.max_connections, evaporation_rate)
-        self.node3 = Node('node3', self.max_connections, evaporation_rate)
-        self.node4 = Node('node4', self.max_connections, evaporation_rate)
+        self.node1 = Node('node1', self.max_connections, evaporation_rate, base_pheromones)
+        self.node2 = Node('node2', self.max_connections, evaporation_rate, base_pheromones)
+        self.node3 = Node('node3', self.max_connections, evaporation_rate, base_pheromones)
+        self.node4 = Node('node4', self.max_connections, evaporation_rate, base_pheromones)
 
     def test_connection_list_empty(self):
         self.assertEqual(self.node1.connections, [])
@@ -110,8 +110,8 @@ class TestNode(unittest.TestCase):
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3
-        self.node1 = Node('node1', max_connections, evaporation_rate)
-        self.node2 = Node('node2', max_connections, evaporation_rate)
+        self.node1 = Node('node1', max_connections, evaporation_rate, base_pheromones)
+        self.node2 = Node('node2', max_connections, evaporation_rate, base_pheromones)
         self.node1.add_connection(self.node2)
         self.taska = TaskA()
         self.ant = Ant(self.node1, self.taska, None)
@@ -135,8 +135,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_start(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate)
-        node4 = Node('node4', 2, evaporation_rate)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
         path = [node1, node2, node3, node1, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -147,8 +147,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_middle(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate)
-        node4 = Node('node4', 2, evaporation_rate)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
         path = [node1, node2, node3, node4, node3, node4]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -159,8 +159,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_end(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate)
-        node4 = Node('node4', 2, evaporation_rate)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
         path = [node1, node2, node3, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -171,8 +171,8 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_multiple(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate)
-        node4 = Node('node4', 2, evaporation_rate)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
         path = [node1, node2, node3, node1, node3, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -209,8 +209,8 @@ class TestAnt(unittest.TestCase):
 class TestConnection(unittest.TestCase):
     def setUp(self):
         self.max_connections = 7
-        self.node1 = Node('node1', self.max_connections, evaporation_rate)
-        self.conn1 = Connection(self.node1, evaporation_rate)
+        self.node1 = Node('node1', self.max_connections, evaporation_rate, base_pheromones)
+        self.conn1 = Connection(self.node1, evaporation_rate, base_pheromones)
 
     def test_get_node(self):
         self.assertEqual(self.node1, self.conn1.get_node())
