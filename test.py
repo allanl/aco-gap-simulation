@@ -136,6 +136,26 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 555.5555555555555)
 
+    def test_max_pheromone_changes(self):
+        self.task = TaskA()
+        self.ant = Ant(self.node1, self.task, None)
+        self.node1.add_connection(self.node2)
+        self.node2.add_connection(self.node3)
+        self.node3.add_task(self.task)
+        self.assertEqual(self.node1.get_max_pheromones(self.task), base_pheromones)
+        while self.ant.is_home() == False:
+            self.ant.walk()
+        max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
+        self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
+        self.assertEqual(self.node1.get_max_pheromones(self.task), 370.3703703703703)
+        self.node2.add_task(self.task)
+        self.ant2 = Ant(self.node1, self.task, None)
+        while self.ant2.is_home() == False:
+            self.ant2.walk()
+        max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
+        self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
+        self.assertEqual(self.node1.get_max_pheromones(self.task), 555.5555555555555)
+
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3
