@@ -92,7 +92,14 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, self.task), pheromones)
 
     def test_return_home(self):
-        raise NotImplementedError
+        task = TaskA()
+        ant = Ant(self.node1, task, None)
+        self.node1.add_connection(self.node2)
+        self.node2.add_task(task)
+        self.assertFalse(self.node1.get_best_path(task))
+        ant.walk()
+        ant.walk()
+        self.assertEqual(self.node1.get_best_path(task), ant.get_path())
 
 class TestAnt(unittest.TestCase):
     def setUp(self):
