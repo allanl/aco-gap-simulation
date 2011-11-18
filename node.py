@@ -139,6 +139,9 @@ class Node:
     def get_best_path(self, task):
         return self.best_path.get(task.__class__, False)
 
+    def get_best_path_length(self, task):
+        return len(self.best_path.get(task.__class__, []))
+
     def __str__(self):
         return '''Node: %s
 Tasks: %s''' % (self.name, self.tasks)

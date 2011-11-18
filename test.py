@@ -92,14 +92,20 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, self.task), pheromones)
 
     def test_return_home(self):
-        task = TaskA()
-        ant = Ant(self.node1, task, None)
+        self.task = TaskA()
+        self.ant = Ant(self.node1, self.task, None)
         self.node1.add_connection(self.node2)
-        self.node2.add_task(task)
-        self.assertFalse(self.node1.get_best_path(task))
-        ant.walk()
-        ant.walk()
-        self.assertEqual(self.node1.get_best_path(task), ant.get_path())
+        self.node2.add_task(self.task)
+        self.assertFalse(self.node1.get_best_path(self.task))
+        self.ant.walk()
+        self.ant.walk()
+        self.assertEqual(self.node1.get_best_path(self.task), self.ant.get_path())
+
+    def test_get_best_path_length(self):
+        self.test_return_home()
+        # not relevant input - return path length of 0
+        self.assertEqual(self.node1.get_best_path_length(self.ant), 0)
+        self.assertEqual(self.node1.get_best_path_length(self.task), 2)
 
 class TestAnt(unittest.TestCase):
     def setUp(self):
