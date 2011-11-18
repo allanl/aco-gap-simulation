@@ -1,4 +1,6 @@
 
+from utilities import evaporate_pheromones
+
 class Connection(object):
     def __init__(self, node, erate, base_ph):
         self.node = node
@@ -21,7 +23,7 @@ class Connection(object):
 
     def evaporate_pheromone(self):
         for task in self.pheromone:
-            self.pheromone[task] = int((1 - self.evaporation_rate) *
+            self.pheromone[task] = evaporate_pheromones(self.evaporation_rate,
                                         self.pheromone[task])
 
     def get_pheromone(self, task):
