@@ -34,6 +34,9 @@ class Connection(object):
         self.initialise_pheromone(task)
         return self.pheromone[task.__class__]
 
+    def get_max_pheromone(self, task):
+        return self.max_pheromone.get(task.__class__, self.base_pheromone)
+
     def set_max_pheromone(self, task, max_ph):
         self.max_pheromone[task.__class__] = max_ph
         self.check_limits(task)

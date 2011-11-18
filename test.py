@@ -319,6 +319,14 @@ class TestConnection(unittest.TestCase):
         self.conn1.set_max_pheromone(task, 100)
         self.assertEqual(self.conn1.get_pheromone(task), 100)
 
+    def test_get_max_pheromone(self):
+        task = TaskA()
+        self.assertEqual(self.conn1.get_max_pheromone(task), base_pheromones)
+        self.conn1.initialise_pheromone(task)
+        self.assertEqual(self.conn1.get_max_pheromone(task), base_pheromones)
+        self.conn1.set_max_pheromone(task, 100)
+        self.assertEqual(self.conn1.get_max_pheromone(task), 100)
+
     def test_add_pheromone_with_max(self):
         task = TaskA()
         max_pheromones = base_pheromones + 10
