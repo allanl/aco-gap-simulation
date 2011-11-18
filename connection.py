@@ -25,7 +25,4 @@ class Connection(object):
                                         self.pheromone[task])
 
     def get_pheromone(self, task):
-        if (task.__class__ in self.pheromone):
-            return self.pheromone[task.__class__]
-        else:
-            return self.base_pheromone
+        return self.pheromone.get(task.__class__, self.base_pheromone)
