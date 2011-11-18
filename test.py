@@ -81,8 +81,10 @@ class TestNode(unittest.TestCase):
         task = TaskA()
         self.node1.add_connection(self.node2)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), base_pheromones)
+        # artificially force pheromones down
+        self.node1.get_connection(self.node2).pheromone[task.__class__] = 100
         self.node1.add_conn_pheromones(self.node2, task, 3)
-        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 1033)
+        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 133)
 
     def test_initialise_pheromones(self):
         self.task = TaskA()
@@ -279,10 +281,12 @@ class TestConnection(unittest.TestCase):
     def test_add_pheromone(self):
         task = TaskA()
         self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+        # artificially force pheromones down
+        self.conn1.pheromone[task.__class__] = 100
         self.conn1.add_pheromone(task, 3)
-        self.assertEqual(self.conn1.get_pheromone(task), 1033)
+        self.assertEqual(self.conn1.get_pheromone(task), 133)
         self.conn1.add_pheromone(task, 3)
-        self.assertEqual(self.conn1.get_pheromone(task), 1066)
+        self.assertEqual(self.conn1.get_pheromone(task), 166)
 
     def test_evaporate_pheromone(self):
         task = TaskA()
@@ -307,6 +311,22 @@ class TestConnection(unittest.TestCase):
         task = TaskA()
         self.conn1.initialise_pheromone(task)
         self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+
+    def test_max_pheromone(self):
+        task = TaskA()
+        self.conn1.initialise_pheromone(task)
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+        self.conn1.set_max_pheromone(task, 100)
+        self.assertEqual(self.conn1.get_pheromone(task), 100)
+
+    def test_add_pheromone_with_max(self):
+        task = TaskA()
+        max_pheromones = base_pheromones + 10
+        self.conn1.initialise_pheromone(task)
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+        self.conn1.set_max_pheromone(task, max_pheromones)
+        self.conn1.add_pheromone(task, 1)
+        self.assertEqual(self.conn1.get_pheromone(task), max_pheromones)
 
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
