@@ -303,6 +303,11 @@ class TestConnection(unittest.TestCase):
         self.conn1.evaporate_pheromone()
         self.assertEqual(self.conn1.get_pheromone(task), pheromone)
 
+    def test_initialise_pheromone(self):
+        task = TaskA()
+        self.conn1.initialise_pheromone(task)
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
         pass
