@@ -85,8 +85,11 @@ class TestNode(unittest.TestCase):
         self.node1.initialise_pheromones(self.task)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, self.task), base_pheromones) 
 
-    def test_evaporate_pheromones(self):
-        raise NotImplementedError
+    def test_complete_round(self):
+        self.test_initialise_pheromones()
+        self.node1.complete_round()
+        pheromones = evaporate_pheromones(base_pheromones)
+        self.assertEqual(self.node1.get_conn_pheromones(self.node2, self.task), pheromones)
 
     def test_return_home(self):
         raise NotImplementedError
