@@ -9,6 +9,8 @@ from taskfactory import TaskFactory
 
 base_pheromones = 1000
 evaporation_rate = 0.1
+def evaporate_pheromones(pheromones):
+    return pheromones * (1 - evaporation_rate)
 
 class TestNode(unittest.TestCase):
     def setUp(self):
@@ -212,12 +214,12 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
 
         # evaporate 1
-        pheromone = 1000 * (1 - evaporation_rate)
+        pheromone = evaporate_pheromones(base_pheromones)
         self.conn1.evaporate_pheromone()
         self.assertEqual(self.conn1.get_pheromone(task), pheromone)
 
         # evaporate 2
-        pheromone = pheromone * (1 - evaporation_rate)
+        pheromone = evaporate_pheromones(pheromone)
         self.conn1.evaporate_pheromone()
         self.assertEqual(self.conn1.get_pheromone(task), pheromone)
 
