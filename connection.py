@@ -16,11 +16,12 @@ class Connection(object):
         self.pheromone[task.__class__] = self.base_pheromone
 
     def add_pheromone(self, task, path_length):
+        c_task = task.__class__
         quantity = 100 / path_length
-        if (task.__class__ in self.pheromone):
-            self.pheromone[task.__class__] += quantity
+        if (c_task in self.pheromone):
+            self.pheromone[c_task] += quantity
         else:
-            self.pheromone[task.__class__] = self.base_pheromone + quantity
+            self.pheromone[c_task] = self.base_pheromone + quantity
 
     def evaporate_pheromone(self):
         for task in self.pheromone:
