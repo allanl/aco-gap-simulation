@@ -157,6 +157,17 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 555)
 
+    def test_max_pheromone_enforced_on_set(self):
+        self.task = TaskA()
+        self.ant = Ant(self.node1, self.task, None)
+        self.node1.add_connection(self.node2)
+        self.node2.add_task(self.task)
+        self.assertEqual(self.node1.get_max_pheromones(self.task), base_pheromones)
+        conn = self.node1.get_connection(self.node2)
+        self.assertEqual(conn.get_pheromone(self.task), base_pheromones)
+        ant_walk_till_home(self.ant)
+        self.assertEqual(conn.get_pheromone(self.task), self.node1.get_max_pheromones(self.task))
+
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3

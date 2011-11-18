@@ -7,6 +7,7 @@ class Connection(object):
         self.evaporation_rate = erate
         self.base_pheromone = base_ph
         self.pheromone = {}
+        self.max_pheromone = {}
 
     def get_node(self):
         return self.node
@@ -28,3 +29,13 @@ class Connection(object):
 
     def get_pheromone(self, task):
         return self.pheromone.get(task.__class__, self.base_pheromone)
+
+    def set_max_pheromone(self, task, max_ph):
+        self.max_pheromone[task.__class__] = max_ph
+        self.check_limits(task)
+
+    def check_limits(self, task):
+        c_task = task.__class__
+        if c_task in self.pheromone:
+            if self.pheromone[c_task] > self.max_pheromone[c_task]:
+                self.pheromone[c_task] = self.max_pheromone[c_task]
