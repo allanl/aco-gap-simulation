@@ -7,6 +7,7 @@ from connection import Connection
 from task import TaskA, TaskB, TaskC
 from taskfactory import TaskFactory
 
+base_pheromones = 1000
 evaporation_rate = 0.1
 
 class TestNode(unittest.TestCase):
@@ -72,7 +73,7 @@ class TestNode(unittest.TestCase):
     def test_set_get_pheromones(self):
         task = TaskA()
         self.node1.add_connection(self.node2)
-        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 1000)
+        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), base_pheromones)
         self.node1.add_conn_pheromones(self.node2, task, 3)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 1033)
 
@@ -195,7 +196,7 @@ class TestConnection(unittest.TestCase):
 
     def test_add_pheromone(self):
         task = TaskA()
-        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 1033)
         self.conn1.add_pheromone(task, 3)
@@ -204,11 +205,11 @@ class TestConnection(unittest.TestCase):
     def test_evaporate_pheromone(self):
         task = TaskA()
         # before initialise
-        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
 
         # initialise
         self.conn1.initialise_pheromone(task)
-        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
 
         # evaporate 1
         pheromone = 1000 * (1 - evaporation_rate)
