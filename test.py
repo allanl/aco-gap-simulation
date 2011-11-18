@@ -109,6 +109,24 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node1.get_best_path_length(self.ant), 0)
         self.assertEqual(self.node1.get_best_path_length(self.task), 2)
 
+    def test_overwrite_best_path_length(self):
+        self.task = TaskA()
+        self.ant = Ant(self.node1, self.task, None)
+        self.node1.add_connection(self.node2)
+        self.node2.add_connection(self.node3)
+        self.node3.add_task(self.task)
+        self.assertFalse(self.node1.get_best_path(self.task))
+        while self.ant.is_home() == False:
+            self.ant.walk()
+        self.assertEqual(self.node1.get_best_path(self.task), self.ant.get_path())
+        self.assertEqual(self.node1.get_best_path_length(self.task), 3)
+        self.node2.add_task(self.task)
+        self.ant2 = Ant(self.node1, self.task, None)
+        while self.ant2.is_home() == False:
+            self.ant2.walk()
+        self.assertEqual(self.node1.get_best_path(self.task), self.ant2.get_path())
+        self.assertEqual(self.node1.get_best_path_length(self.task), 2)
+
     def test_set_max_pheromones(self):
         self.test_return_home()
         # not relevant input - return base level of pheromones
