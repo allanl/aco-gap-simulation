@@ -133,7 +133,6 @@ class Node:
             new_best = 1
 
         if new_best:
-            print '%s %s new_best: %d' % (self.get_name(), task, ant.get_path_length())
             self.best_path[task] = ant.get_path()
             self.max_pheromones[task] = calc_max_pheromones(self.evaporation_rate, ant.get_path_length())
 
