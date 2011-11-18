@@ -274,6 +274,7 @@ class TestConnection(unittest.TestCase):
         self.max_connections = 7
         self.node1 = Node('node1', self.max_connections, evaporation_rate, base_pheromones)
         self.conn1 = Connection(self.node1, evaporation_rate, base_pheromones)
+        self.conn2 = Connection(self.node1, evaporation_rate, base_pheromones)
 
     def test_get_node(self):
         self.assertEqual(self.node1, self.conn1.get_node())
@@ -335,6 +336,13 @@ class TestConnection(unittest.TestCase):
         self.conn1.set_max_pheromone(task, max_pheromones)
         self.conn1.add_pheromone(task, 1)
         self.assertEqual(self.conn1.get_pheromone(task), max_pheromones)
+
+    def test_different_connection_max_pheromones(self):
+        task = TaskA()
+        self.conn1.set_max_pheromone(task, 100)
+        self.conn2.set_max_pheromone(task, 150)
+        self.assertEqual(self.conn1.get_max_pheromone(task), 100)
+        self.assertEqual(self.conn2.get_max_pheromone(task), 150)
 
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
