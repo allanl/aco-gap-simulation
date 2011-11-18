@@ -116,6 +116,7 @@ class TestNode(unittest.TestCase):
         self.node2.add_connection(self.node3)
         self.node3.add_task(self.task)
         self.assertFalse(self.node1.get_best_path(self.task))
+        self.assertEqual(self.node1.get_best_path_length(self.task), 0)
         while self.ant.is_home() == False:
             self.ant.walk()
         self.assertEqual(self.node1.get_best_path(self.task), self.ant.get_path())
