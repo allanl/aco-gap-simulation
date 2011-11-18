@@ -15,6 +15,9 @@ def set_max_pheromones(best_path_length):
     return (1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length)
 def create_nodes(number, max_conn, e_rate, base_ph):
     return (Node('n%d' % number, max_conn, e_rate, base_ph) for i in range(number))
+def ant_walk_till_home(ant):
+    while ant.is_home() == False:
+        ant.walk()
 
 class TestNode(unittest.TestCase):
     def setUp(self):
@@ -143,15 +146,13 @@ class TestNode(unittest.TestCase):
         self.node2.add_connection(self.node3)
         self.node3.add_task(self.task)
         self.assertEqual(self.node1.get_max_pheromones(self.task), base_pheromones)
-        while self.ant.is_home() == False:
-            self.ant.walk()
+        ant_walk_till_home(self.ant)
         max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 370.3703703703703)
         self.node2.add_task(self.task)
         self.ant2 = Ant(self.node1, self.task, None)
-        while self.ant2.is_home() == False:
-            self.ant2.walk()
+        ant_walk_till_home(self.ant2)
         max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 555.5555555555555)
