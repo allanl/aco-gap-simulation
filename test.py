@@ -13,14 +13,14 @@ def evaporate_pheromones(pheromones):
     return pheromones * (1 - evaporation_rate)
 def set_max_pheromones(best_path_length):
     return (1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length)
+def create_nodes(number, max_conn, e_rate, base_ph):
+    return (Node('n%d' % number, max_conn, e_rate, base_ph) for i in range(number))
 
 class TestNode(unittest.TestCase):
     def setUp(self):
         self.max_connections = 2
-        self.node1 = Node('node1', self.max_connections, evaporation_rate, base_pheromones)
-        self.node2 = Node('node2', self.max_connections, evaporation_rate, base_pheromones)
-        self.node3 = Node('node3', self.max_connections, evaporation_rate, base_pheromones)
-        self.node4 = Node('node4', self.max_connections, evaporation_rate, base_pheromones)
+        (self.node1, self.node2, self.node3, self.node4) = create_nodes(
+            4, self.max_connections, evaporation_rate, base_pheromones)
 
     def test_connection_list_empty(self):
         self.assertEqual(self.node1.connections, [])
