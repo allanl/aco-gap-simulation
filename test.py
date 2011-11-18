@@ -11,6 +11,8 @@ base_pheromones = 1000
 evaporation_rate = 0.1
 def evaporate_pheromones(pheromones):
     return pheromones * (1 - evaporation_rate)
+def set_max_pheromones(best_path_length):
+    return (1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length)
 
 class TestNode(unittest.TestCase):
     def setUp(self):
@@ -106,6 +108,14 @@ class TestNode(unittest.TestCase):
         # not relevant input - return path length of 0
         self.assertEqual(self.node1.get_best_path_length(self.ant), 0)
         self.assertEqual(self.node1.get_best_path_length(self.task), 2)
+
+    def test_set_max_pheromones(self):
+        self.test_return_home()
+        # not relevant input - return base level of pheromones
+        self.assertEqual(self.node1.get_max_pheromones(self.ant), base_pheromones)
+        max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
+        self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
+        self.assertEqual(self.node1.get_max_pheromones(self.task), 555.5555555555555)
 
 class TestAnt(unittest.TestCase):
     def setUp(self):

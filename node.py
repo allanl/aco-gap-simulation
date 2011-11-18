@@ -1,6 +1,7 @@
 import random
 
 from connection import Connection
+from utilities import calc_max_pheromones
 
 class TooManyConnections(Exception):
     pass
@@ -12,6 +13,7 @@ class Node:
         self.name = name
         self.connections = []
         self.best_path = {}
+        self.max_pheromones = {}
         self.max_connections = max_connections
         self.evaporation_rate = erate
         self.base_pheromones = base_ph
@@ -133,6 +135,7 @@ class Node:
         if new_best:
             print '%s %s new_best: %d' % (self.get_name(), task, ant.get_path_length())
             self.best_path[task] = ant.get_path()
+            self.max_pheromones[task] = calc_max_pheromones(self.evaporation_rate, ant.get_path_length())
 
     def get_name(self):
         return self.name
@@ -142,6 +145,9 @@ class Node:
 
     def get_best_path_length(self, task):
         return len(self.best_path.get(task.__class__, []))
+
+    def get_max_pheromones(self, task):
+        return self.max_pheromones.get(task.__class__, self.base_pheromones)
 
     def __str__(self):
         return '''Node: %s
