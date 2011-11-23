@@ -68,10 +68,11 @@ if __name__ == '__main__':
             except TooManyConnections:
                 break
 
-    nodes[5].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKA))
-    nodes[3].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKA))
-    nodes[8].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKB))
-    nodes[6].add_task(TaskFactory.get_task(TaskFactory.tasks.TASKB))
+    taskfactory = TaskFactory()
+    nodes[5].add_task(taskfactory.get_task(TaskFactory.tasks.TASKA))
+    nodes[3].add_task(taskfactory.get_task(TaskFactory.tasks.TASKA))
+    nodes[8].add_task(taskfactory.get_task(TaskFactory.tasks.TASKB))
+    nodes[6].add_task(taskfactory.get_task(TaskFactory.tasks.TASKB))
 
     print ""
     print_nodes(nodes)
@@ -79,7 +80,7 @@ if __name__ == '__main__':
 
     # initialise pheromones
     for task in TaskFactory.get_task_names():
-        task = TaskFactory.get_task(task)
+        task = taskfactory.get_task(task)
         for node in nodes:
             node.initialise_pheromones(task)
 
@@ -87,7 +88,7 @@ if __name__ == '__main__':
         for node in nodes:
             for task in TaskFactory.get_task_names():
                 ants = create_ants(number_of_ants, node,
-                    TaskFactory.get_task(task), None)
+                    taskfactory.get_task(task), None)
                 for ant in ants:
                     for f in range(100): ant.walk()
             node.complete_round()
@@ -102,11 +103,11 @@ if __name__ == '__main__':
 
             # show adjacency matrix
             for task in TaskFactory.get_task_names():
-                task = TaskFactory.get_task(task)
+                task = taskfactory.get_task(task)
                 print 'adjacency matrix - %s - round %d' % (task, i)
                 for line in create_adjacency_matrix(nodes, task):
                     print 'r%d,%s' % (i, line)
 
     for task in TaskFactory.get_task_names():
-        task = TaskFactory.get_task(task)
+        task = taskfactory.get_task(task)
         graph_pheromones(nodes, task, 'graph%s' % (str(task).lower()))

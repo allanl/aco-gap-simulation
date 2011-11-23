@@ -56,10 +56,10 @@ class Node:
             count += 1
 
     def add_task(self, task):
-        self.tasks[task.__class__] = 1
+        self.tasks[task] = 1
 
     def has_task(self, task):
-        if self.tasks.get(task.__class__, 0) == 1:
+        if self.tasks.get(task, 0) == 1:
             return True
         else:
             return False
@@ -126,19 +126,18 @@ class Node:
     def return_home(self, ant):
         new_best = 0
         task = ant.get_goal()
-        c_task = task.__class__
-        if c_task in self.best_path:
-            if len(self.best_path[c_task]) > ant.get_path_length():
+        if task in self.best_path:
+            if len(self.best_path[task]) > ant.get_path_length():
                 new_best = 1
         else:
             new_best = 1
 
         if new_best:
-            self.best_path[c_task] = ant.get_path()
+            self.best_path[task] = ant.get_path()
             self.set_max_pheromones(task, calc_max_pheromones(self.evaporation_rate, ant.get_path_length()))
 
     def set_max_pheromones(self, task, max_ph):
-        self.max_pheromones[task.__class__] = max_ph
+        self.max_pheromones[task] = max_ph
         for conn in self.connections:
             conn.set_max_pheromone(task, max_ph)
 
@@ -146,13 +145,13 @@ class Node:
         return self.name
 
     def get_best_path(self, task):
-        return self.best_path.get(task.__class__, False)
+        return self.best_path.get(task, False)
 
     def get_best_path_length(self, task):
-        return len(self.best_path.get(task.__class__, []))
+        return len(self.best_path.get(task, []))
 
     def get_max_pheromones(self, task):
-        return self.max_pheromones.get(task.__class__, self.base_pheromones)
+        return self.max_pheromones.get(task, self.base_pheromones)
 
     def __str__(self):
         return '''Node: %s

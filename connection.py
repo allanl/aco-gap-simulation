@@ -13,16 +13,14 @@ class Connection(object):
         return self.node
 
     def initialise_pheromone(self, task):
-        c_task = task.__class__
-        if c_task not in self.pheromone:
-            self.pheromone[c_task] = self.base_pheromone
-            self.max_pheromone[c_task] = self.base_pheromone
+        if task not in self.pheromone:
+            self.pheromone[task] = self.base_pheromone
+            self.max_pheromone[task] = self.base_pheromone
 
     def add_pheromone(self, task, path_length):
-        c_task = task.__class__
         quantity = 100 / path_length
         self.initialise_pheromone(task)
-        self.pheromone[c_task] = self.pheromone.get(c_task, self.base_pheromone) + quantity
+        self.pheromone[task] = self.pheromone.get(task, self.base_pheromone) + quantity
         self.check_limits(task)
 
     def evaporate_pheromone(self):
@@ -32,17 +30,16 @@ class Connection(object):
 
     def get_pheromone(self, task):
         self.initialise_pheromone(task)
-        return self.pheromone[task.__class__]
+        return self.pheromone[task]
 
     def get_max_pheromone(self, task):
-        return self.max_pheromone.get(task.__class__, self.base_pheromone)
+        return self.max_pheromone.get(task, self.base_pheromone)
 
     def set_max_pheromone(self, task, max_ph):
-        self.max_pheromone[task.__class__] = max_ph
+        self.max_pheromone[task] = max_ph
         self.check_limits(task)
 
     def check_limits(self, task):
-        c_task = task.__class__
-        if c_task in self.pheromone:
-            if self.pheromone[c_task] > self.max_pheromone[c_task]:
-                self.pheromone[c_task] = self.max_pheromone[c_task]
+        if task in self.pheromone:
+            if self.pheromone[task] > self.max_pheromone[task]:
+                self.pheromone[task] = self.max_pheromone[task]

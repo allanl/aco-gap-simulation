@@ -70,7 +70,7 @@ class TestNode(unittest.TestCase):
         self.node1.add_task(task)
         self.assertTrue(self.node1.has_task(task))
         taska = TaskA()
-        self.assertTrue(self.node1.has_task(taska))
+        self.assertFalse(self.node1.has_task(taska))
 
     def test_no_connect_to_self(self):
         self.assertFalse(self.node1.has_connection(self.node1))
@@ -82,7 +82,7 @@ class TestNode(unittest.TestCase):
         self.node1.add_connection(self.node2)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), base_pheromones)
         # artificially force pheromones down
-        self.node1.get_connection(self.node2).pheromone[task.__class__] = 100
+        self.node1.get_connection(self.node2).pheromone[task] = 100
         self.node1.add_conn_pheromones(self.node2, task, 3)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 133)
 
@@ -297,7 +297,7 @@ class TestConnection(unittest.TestCase):
         task = TaskA()
         self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
         # artificially force pheromones down
-        self.conn1.pheromone[task.__class__] = 100
+        self.conn1.pheromone[task] = 100
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 133)
         self.conn1.add_pheromone(task, 3)
@@ -360,12 +360,12 @@ class TestConnection(unittest.TestCase):
 
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
-        pass
+        self.taskfactory = TaskFactory()
 
     def test_create_task(self):
-        isinstance(TaskFactory.get_task(TaskFactory.tasks.TASKA), TaskA)
-        isinstance(TaskFactory.get_task(TaskFactory.tasks.TASKA), TaskB)
-        isinstance(TaskFactory.get_task(TaskFactory.tasks.TASKA), TaskC)
+        isinstance(self.taskfactory.get_task(TaskFactory.tasks.TASKA), TaskA)
+        isinstance(self.taskfactory.get_task(TaskFactory.tasks.TASKA), TaskB)
+        isinstance(self.taskfactory.get_task(TaskFactory.tasks.TASKA), TaskC)
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestNode)

@@ -4,19 +4,23 @@ from utilities import enum
 class TaskFactory(object):
     tasks = enum("TASKA", "TASKB", "TASKC")
 
+    # instances
+    taska = TaskA()
+    taskb = TaskB()
+    taskc = TaskC()
+
     @staticmethod
     def get_task_names():
         return [TaskFactory.tasks.TASKA,
             TaskFactory.tasks.TASKB,
             TaskFactory.tasks.TASKC]
 
-    @staticmethod
-    def get_task(task):
+    def get_task(self, task):
         if (task == TaskFactory.tasks.TASKA):
-            return TaskA()
+            return self.taska
         elif (task == TaskFactory.tasks.TASKB):
-            return TaskB()
+            return self.taskb
         elif (task == TaskFactory.tasks.TASKC):
-            return TaskC()
+            return self.taskc
         else:
             raise NotImplementedError
