@@ -6,7 +6,7 @@ from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
 from taskfactory import TaskFactory
-from utilities import (calc_min_pheromones, calc_nth_root,
+from utilities import (calc_max_pheromones, calc_min_pheromones, calc_nth_root,
     get_base_min_pheromones)
 
 base_pheromones = 1000
@@ -14,8 +14,8 @@ evaporation_rate = 0.1
 best_path_prob = 0.05
 def evaporate_pheromones(pheromones):
     return pheromones * (1 - evaporation_rate)
-def set_max_pheromones(best_path_length):
-    return int((1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length))
+def calc_max_ph_erate(best_path_length):
+    return calc_max_pheromones(evaporation_rate, best_path_length)
 def ant_walk_till_home(ant):
     while ant.is_home() == False:
         ant.walk()
@@ -139,7 +139,7 @@ class TestNode(unittest.TestCase):
         self.test_return_home()
         # not relevant input - return base level of pheromones
         self.assertEqual(self.node1.get_max_pheromones(self.ant), base_pheromones)
-        max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
+        max_pheromones = calc_max_ph_erate(self.node1.get_best_path_length(self.task))
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 555)
 
@@ -151,13 +151,13 @@ class TestNode(unittest.TestCase):
         self.node3.add_task(self.task)
         self.assertEqual(self.node1.get_max_pheromones(self.task), base_pheromones)
         ant_walk_till_home(self.ant)
-        max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
+        max_pheromones = calc_max_ph_erate(self.node1.get_best_path_length(self.task))
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 370)
         self.node2.add_task(self.task)
         self.ant2 = Ant(self.node1, self.task, None)
         ant_walk_till_home(self.ant2)
-        max_pheromones = set_max_pheromones(self.node1.get_best_path_length(self.task))
+        max_pheromones = calc_max_ph_erate(self.node1.get_best_path_length(self.task))
         self.assertEqual(self.node1.get_max_pheromones(self.task), max_pheromones)
         self.assertEqual(self.node1.get_max_pheromones(self.task), 555)
 
@@ -181,10 +181,10 @@ class TestNode(unittest.TestCase):
         self.ant2 = Ant(self.node2, task, None)
         ant_walk_till_home(self.ant1)
         ant_walk_till_home(self.ant2)
-        self.assertEqual(self.node1.get_max_pheromones(task), set_max_pheromones(3))
-        self.assertEqual(self.node1.get_connection(self.node2).get_max_pheromone(task), set_max_pheromones(3))
-        self.assertEqual(self.node2.get_max_pheromones(task), set_max_pheromones(2))
-        self.assertEqual(self.node2.get_connection(self.node1).get_max_pheromone(task), set_max_pheromones(2))
+        self.assertEqual(self.node1.get_max_pheromones(task), calc_max_ph_erate(3))
+        self.assertEqual(self.node1.get_connection(self.node2).get_max_pheromone(task), calc_max_ph_erate(3))
+        self.assertEqual(self.node2.get_max_pheromones(task), calc_max_ph_erate(2))
+        self.assertEqual(self.node2.get_connection(self.node1).get_max_pheromone(task), calc_max_ph_erate(2))
 
     def test_connection_min_pheromones(self):
         task = TaskA()
@@ -436,6 +436,13 @@ class TestUtilities(unittest.TestCase):
         min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
                 1.0)
         self.assertEqual(min_ph, 0)
+
+    def test_calc_max_pheromones(self):
+        self.assertEqual(calc_max_pheromones(evaporation_rate, 1), 1111)
+        self.assertEqual(calc_max_pheromones(evaporation_rate, 2), 555)
+        self.assertEqual(calc_max_pheromones(evaporation_rate, 3), 370)
+        self.assertEqual(calc_max_pheromones(evaporation_rate, 4), 277)
+        self.assertEqual(calc_max_pheromones(evaporation_rate, 5), 222)
 
     def test_base_min_pheromones(self):
         self.assertEqual(get_base_min_pheromones(0), 1)
