@@ -4,7 +4,7 @@ from connection import Connection
 from utilities import calc_max_pheromones, calc_min_pheromones
 
 def create_nodes(number, max_conn, e_rate, base_ph, bp_prob):
-    return [Node('n%d' % number, max_conn, e_rate, base_ph, bp_prob) for i in range(number)]
+    return [Node('n%d' % i, max_conn, e_rate, base_ph, bp_prob) for i in range(number)]
 
 class TooManyConnections(Exception):
     pass
