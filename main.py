@@ -5,18 +5,10 @@ import random
 import sys
 
 from graph import graph_pheromones
-from node import Node, TooManyConnections
+from node import create_nodes, Node, TooManyConnections
 from ant import Ant
 from taskfactory import TaskFactory
 
-max_connections = 7
-
-def create_nodes(count, erate, base_ph, bp_prob):
-    nodes_list = []
-    for index in range(count):
-        nodes_list.append(Node('n%d' % (index), max_connections, erate, base_ph,
-            bp_prob))
-    return nodes_list
 
 def create_ants(count, node, task, payload):
     return [Ant(node, task, payload) for index in range(count)]
@@ -57,9 +49,10 @@ if __name__ == '__main__':
     evaporation_rate = 0.1
     base_pheromones = 1000
     best_path_prob = 0.05
+    max_connections = 7
 
-    nodes = create_nodes(number_of_nodes, evaporation_rate, base_pheromones,
-            best_path_prob)
+    nodes = create_nodes(number_of_nodes, max_connections, evaporation_rate,
+            base_pheromones, best_path_prob)
 
     random.SystemRandom()
     for x in range(len(nodes)):

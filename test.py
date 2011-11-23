@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import unittest
-from node import Node, TooManyConnections
+from node import create_nodes, Node, TooManyConnections
 from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
@@ -16,8 +16,6 @@ def evaporate_pheromones(pheromones):
     return pheromones * (1 - evaporation_rate)
 def set_max_pheromones(best_path_length):
     return int((1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length))
-def create_nodes(number, max_conn, e_rate, base_ph, bp_prob):
-    return (Node('n%d' % number, max_conn, e_rate, base_ph, bp_prob) for i in range(number))
 def ant_walk_till_home(ant):
     while ant.is_home() == False:
         ant.walk()
