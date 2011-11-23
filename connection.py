@@ -1,13 +1,16 @@
 
-from utilities import evaporate_pheromones
+from utilities import (evaporate_pheromones, calc_min_pheromones,
+    get_base_min_pheromones)
 
 class Connection(object):
-    def __init__(self, node, erate, base_ph):
+    def __init__(self, node, erate, base_ph, bp_prob):
         self.node = node
         self.evaporation_rate = erate
         self.base_pheromone = base_ph
+        self.best_path_prob = bp_prob
         self.pheromone = {}
         self.max_pheromone = {}
+        self.min_pheromone = {}
 
     def get_node(self):
         return self.node
@@ -35,9 +38,18 @@ class Connection(object):
     def get_max_pheromone(self, task):
         return self.max_pheromone.get(task, self.base_pheromone)
 
+    def _get_base_min(self):
+        return get_base_min_pheromones(self.base_pheromone)
+
+    def get_min_pheromone(self, task):
+        return self.min_pheromone.get(task, self._get_base_min())
+
     def set_max_pheromone(self, task, max_ph):
         self.max_pheromone[task] = max_ph
         self.check_limits(task)
+
+    def set_min_pheromone(self, task, min_ph):
+        self.min_pheromone[task] = min_ph
 
     def check_limits(self, task):
         if task in self.pheromone:

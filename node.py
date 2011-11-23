@@ -1,7 +1,7 @@
 import random
 
 from connection import Connection
-from utilities import calc_max_pheromones
+from utilities import calc_max_pheromones, calc_min_pheromones
 
 class TooManyConnections(Exception):
     pass
@@ -9,7 +9,7 @@ class TooManyConnections(Exception):
 class Node:
     rand = random.SystemRandom()
 
-    def __init__(self, name, max_connections, erate, base_ph):
+    def __init__(self, name, max_connections, erate, base_ph, bp_prob):
         self.name = name
         self.connections = []
         self.best_path = {}
@@ -17,6 +17,7 @@ class Node:
         self.max_connections = max_connections
         self.evaporation_rate = erate
         self.base_pheromones = base_ph
+        self.best_path_prob = bp_prob
         self.tasks = {}
 
     def add_connection(self, node):
@@ -25,9 +26,11 @@ class Node:
         if (not self.has_connection(node)) and (not self is node):
             # check connections still available
             if len(self.connections) < self.max_connections:
-                self.connections.append(Connection(node, self.evaporation_rate, self.base_pheromones))
+                self.connections.append(Connection(node, self.evaporation_rate,
+                    self.base_pheromones, self.best_path_prob))
                 try:
                     node.add_connection(self)
+                    self.set_min_pheromones()
                 except TooManyConnections:
                     # other side connections already full
                     self.remove_connection(node)
@@ -135,11 +138,25 @@ class Node:
         if new_best:
             self.best_path[task] = ant.get_path()
             self.set_max_pheromones(task, calc_max_pheromones(self.evaporation_rate, ant.get_path_length()))
+            self.set_task_min_pheromones(task)
 
     def set_max_pheromones(self, task, max_ph):
         self.max_pheromones[task] = max_ph
         for conn in self.connections:
             conn.set_max_pheromone(task, max_ph)
+
+    def set_min_pheromones(self):
+        for task in self.max_pheromones:
+            self.set_task_min_pheromones(task)
+
+    def set_task_min_pheromones(self, task):
+        max_ph = self.get_max_pheromones(task)
+        conn_num = len(self.get_connections())
+        best_path_len = self.get_best_path_length(task)
+        min_ph = calc_min_pheromones(self.evaporation_rate, max_ph,
+                conn_num, best_path_len, self.best_path_prob)
+        for conn in self.connections:
+            conn.set_min_pheromone(task, min_ph)
 
     def get_name(self):
         return self.name

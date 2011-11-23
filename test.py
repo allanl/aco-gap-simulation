@@ -6,15 +6,18 @@ from ant import Ant
 from connection import Connection
 from task import TaskA, TaskB, TaskC
 from taskfactory import TaskFactory
+from utilities import (calc_min_pheromones, calc_nth_root,
+    get_base_min_pheromones)
 
 base_pheromones = 1000
 evaporation_rate = 0.1
+best_path_prob = 0.05
 def evaporate_pheromones(pheromones):
     return pheromones * (1 - evaporation_rate)
 def set_max_pheromones(best_path_length):
     return int((1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length))
-def create_nodes(number, max_conn, e_rate, base_ph):
-    return (Node('n%d' % number, max_conn, e_rate, base_ph) for i in range(number))
+def create_nodes(number, max_conn, e_rate, base_ph, bp_prob):
+    return (Node('n%d' % number, max_conn, e_rate, base_ph, bp_prob) for i in range(number))
 def ant_walk_till_home(ant):
     while ant.is_home() == False:
         ant.walk()
@@ -23,7 +26,8 @@ class TestNode(unittest.TestCase):
     def setUp(self):
         self.max_connections = 2
         (self.node1, self.node2, self.node3, self.node4) = create_nodes(
-            4, self.max_connections, evaporation_rate, base_pheromones)
+            4, self.max_connections, evaporation_rate, base_pheromones,
+            best_path_prob)
 
     def test_connection_list_empty(self):
         self.assertEqual(self.node1.connections, [])
@@ -184,11 +188,34 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node2.get_max_pheromones(task), set_max_pheromones(2))
         self.assertEqual(self.node2.get_connection(self.node1).get_max_pheromone(task), set_max_pheromones(2))
 
+    def test_connection_min_pheromones(self):
+        task = TaskA()
+        self.node1.add_connection(self.node2)
+        min_ph = get_base_min_pheromones(base_pheromones)
+        #min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 10, 10,
+                #best_path_prob)
+        self.assertEqual(self.node1.get_connection(self.node2).get_min_pheromone(task), min_ph)
+        self.node2.add_connection(self.node3)
+        # still not initialised because no ants returned
+        self.assertEqual(self.node2.get_connection(self.node1).get_min_pheromone(task), min_ph)
+        # get results
+        ant = Ant(self.node2, task, None)
+        self.node3.add_task(task)
+        ant_walk_till_home(ant)
+        # min pheromones initialised
+        max_ph = self.node2.get_max_pheromones(task)
+        min_ph = calc_min_pheromones(evaporation_rate, max_ph, 2, 2,
+                best_path_prob)
+        self.assertEqual(self.node2.get_connection(self.node1).get_min_pheromone(task), min_ph)
+        self.assertEqual(self.node2.get_connection(self.node3).get_min_pheromone(task), min_ph)
+
 class TestAnt(unittest.TestCase):
     def setUp(self):
         max_connections = 3
-        self.node1 = Node('node1', max_connections, evaporation_rate, base_pheromones)
-        self.node2 = Node('node2', max_connections, evaporation_rate, base_pheromones)
+        self.node1 = Node('node1', max_connections, evaporation_rate,
+                base_pheromones, best_path_prob)
+        self.node2 = Node('node2', max_connections, evaporation_rate,
+                base_pheromones, best_path_prob)
         self.node1.add_connection(self.node2)
         self.taska = TaskA()
         self.ant = Ant(self.node1, self.taska, None)
@@ -212,8 +239,10 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_start(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
-        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
         path = [node1, node2, node3, node1, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -224,8 +253,10 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_middle(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
-        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
         path = [node1, node2, node3, node4, node3, node4]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -236,8 +267,10 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_end(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
-        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
         path = [node1, node2, node3, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -248,8 +281,10 @@ class TestAnt(unittest.TestCase):
     def test_clean_path_multiple(self):
         node1 = self.node1
         node2 = self.node2
-        node3 = Node('node3', 2, evaporation_rate, base_pheromones)
-        node4 = Node('node4', 2, evaporation_rate, base_pheromones)
+        node3 = Node('node3', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
+        node4 = Node('node4', 2, evaporation_rate, base_pheromones,
+                best_path_prob)
         path = [node1, node2, node3, node1, node3, node4, node3]
         self.ant.path = path
         self.assertEqual(self.ant.get_path(), path)
@@ -286,9 +321,12 @@ class TestAnt(unittest.TestCase):
 class TestConnection(unittest.TestCase):
     def setUp(self):
         self.max_connections = 7
-        self.node1 = Node('node1', self.max_connections, evaporation_rate, base_pheromones)
-        self.conn1 = Connection(self.node1, evaporation_rate, base_pheromones)
-        self.conn2 = Connection(self.node1, evaporation_rate, base_pheromones)
+        self.node1 = Node('node1', self.max_connections, evaporation_rate,
+                base_pheromones, best_path_prob)
+        self.conn1 = Connection(self.node1, evaporation_rate, base_pheromones,
+                best_path_prob)
+        self.conn2 = Connection(self.node1, evaporation_rate, base_pheromones,
+                best_path_prob)
 
     def test_get_node(self):
         self.assertEqual(self.node1, self.conn1.get_node())
@@ -358,6 +396,18 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(self.conn1.get_max_pheromone(task), 100)
         self.assertEqual(self.conn2.get_max_pheromone(task), 150)
 
+    def test_get_set_min_pheromone(self):
+        task = TaskA()
+        self.conn1.set_min_pheromone(task, 100)
+        self.conn2.set_min_pheromone(task, 150)
+        self.assertEqual(self.conn1.get_min_pheromone(task), 100)
+        self.assertEqual(self.conn2.get_min_pheromone(task), 150)
+
+    def test_get_base_min_pheromone(self):
+        task = TaskA()
+        self.assertEqual(self.conn1.get_min_pheromone(task),
+                get_base_min_pheromones(base_pheromones))
+
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
         self.taskfactory = TaskFactory()
@@ -367,6 +417,36 @@ class TestTaskFactory(unittest.TestCase):
         isinstance(self.taskfactory.get_task(TaskFactory.tasks.TASKA), TaskB)
         isinstance(self.taskfactory.get_task(TaskFactory.tasks.TASKA), TaskC)
 
+class TestUtilities(unittest.TestCase):
+    def test_root_function(self):
+        self.assertEqual(calc_nth_root(8, 3), 2)
+        self.assertEqual(calc_nth_root(16, 2), 4)
+
+    def test_min_pheromones(self):
+        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
+                0.05)
+        self.assertEqual(min_ph, 571)
+        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
+                0.25)
+        self.assertEqual(min_ph, 195)
+        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
+                0.5)
+        self.assertEqual(min_ph, 86)
+        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
+                0.75)
+        self.assertEqual(min_ph, 33)
+        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
+                1.0)
+        self.assertEqual(min_ph, 0)
+
+    def test_base_min_pheromones(self):
+        self.assertEqual(get_base_min_pheromones(0), 1)
+        self.assertEqual(get_base_min_pheromones(1), 1)
+        self.assertEqual(get_base_min_pheromones(base_pheromones), 51)
+        self.assertEqual(get_base_min_pheromones(1200), 61)
+        self.assertEqual(get_base_min_pheromones(3000), 151)
+
+
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestNode)
     unittest.TextTestRunner(verbosity=2).run(suite)
@@ -375,4 +455,6 @@ if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestConnection)
     unittest.TextTestRunner(verbosity=2).run(suite)
     suite = unittest.TestLoader().loadTestsFromTestCase(TestTaskFactory)
+    unittest.TextTestRunner(verbosity=2).run(suite)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestUtilities)
     unittest.TextTestRunner(verbosity=2).run(suite)
