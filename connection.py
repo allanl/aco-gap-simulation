@@ -1,5 +1,5 @@
 
-from utilities import (evaporate_pheromones, calc_min_pheromones,
+from utilities import (evaporate_pheromones,
     get_base_min_pheromones)
 
 class Connection(object):

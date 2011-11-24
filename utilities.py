@@ -6,7 +6,7 @@ def enum(*sequential, **named):
 def calc_max_pheromones(evaporation_rate, best_path_length):
     return int((1000.0 / (1 - evaporation_rate)) * (1.0 / best_path_length))
 
-def calc_min_pheromones(evaporation_rate, max_pheromones, number_connections,
+def calc_min_pheromones(max_pheromones, number_connections,
         num_steps, best_path_prob):
     # formula: (tau_{max} * (1 - \sqrt[n]p_{best})) / ((num_conn - 1) *
     # \sqrt[n]p_{best})

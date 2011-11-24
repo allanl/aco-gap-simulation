@@ -156,7 +156,7 @@ class Node:
         max_ph = self.get_max_pheromones(task)
         conn_num = len(self.get_connections())
         best_path_len = self.get_best_path_length(task)
-        min_ph = calc_min_pheromones(self.evaporation_rate, max_ph,
+        min_ph = calc_min_pheromones(max_ph,
                 conn_num, best_path_len, self.best_path_prob)
         for conn in self.connections:
             conn.set_min_pheromone(task, min_ph)

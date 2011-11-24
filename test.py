@@ -190,8 +190,7 @@ class TestNode(unittest.TestCase):
         task = TaskA()
         self.node1.add_connection(self.node2)
         min_ph = get_base_min_pheromones(base_pheromones)
-        #min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 10, 10,
-                #best_path_prob)
+        #min_ph = calc_min_pheromones(base_pheromones, 10, 10, best_path_prob)
         self.assertEqual(self.node1.get_connection(self.node2).get_min_pheromone(task), min_ph)
         self.node2.add_connection(self.node3)
         # still not initialised because no ants returned
@@ -202,8 +201,7 @@ class TestNode(unittest.TestCase):
         ant_walk_till_home(ant)
         # min pheromones initialised
         max_ph = self.node2.get_max_pheromones(task)
-        min_ph = calc_min_pheromones(evaporation_rate, max_ph, 2, 2,
-                best_path_prob)
+        min_ph = calc_min_pheromones(max_ph, 2, 2, best_path_prob)
         self.assertEqual(self.node2.get_connection(self.node1).get_min_pheromone(task), min_ph)
         self.assertEqual(self.node2.get_connection(self.node3).get_min_pheromone(task), min_ph)
 
@@ -421,20 +419,15 @@ class TestUtilities(unittest.TestCase):
         self.assertEqual(calc_nth_root(16, 2), 4)
 
     def test_min_pheromones(self):
-        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
-                0.05)
+        min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.05)
         self.assertEqual(min_ph, 571)
-        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
-                0.25)
+        min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.25)
         self.assertEqual(min_ph, 195)
-        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
-                0.5)
+        min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.5)
         self.assertEqual(min_ph, 86)
-        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
-                0.75)
+        min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.75)
         self.assertEqual(min_ph, 33)
-        min_ph = calc_min_pheromones(evaporation_rate, base_pheromones, 3, 3,
-                1.0)
+        min_ph = calc_min_pheromones(base_pheromones, 3, 3, 1.0)
         self.assertEqual(min_ph, 0)
 
     def test_calc_max_pheromones(self):
