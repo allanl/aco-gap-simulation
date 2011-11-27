@@ -58,6 +58,8 @@ class Connection(object):
 
     def set_max_pheromone(self, task, max_ph):
         self.max_pheromone[task] = max_ph
+        if max_ph < self.get_min_pheromone(task):
+            self.set_min_pheromone(task, max_ph)
         self.check_limits(task)
 
     def set_min_pheromone(self, task, min_ph):
