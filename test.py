@@ -66,6 +66,20 @@ class TestNode(unittest.TestCase):
         self.node1.add_task(task)
         self.assertTrue(self.node1.has_task(task))
 
+    def test_remove_task(self):
+        task = TaskA()
+        self.assertFalse(self.node1.has_task(task))
+        self.node1.add_task(task)
+        self.assertTrue(self.node1.has_task(task))
+        self.node1.remove_task(task)
+        self.assertFalse(self.node1.has_task(task))
+
+    def test_remove_not_set_task(self):
+        task = TaskA()
+        self.assertFalse(self.node1.has_task(task))
+        self.node1.remove_task(task)
+        self.assertFalse(self.node1.has_task(task))
+
     def test_set_check_task_instance(self):
         task = TaskA()
         self.assertFalse(self.node1.has_task(task))

@@ -64,6 +64,10 @@ class Node:
     def add_task(self, task):
         self.tasks[task] = 1
 
+    def remove_task(self, task):
+        if task in self.tasks:
+            del self.tasks[task]
+
     def has_task(self, task):
         if self.tasks.get(task, 0) == 1:
             return True
