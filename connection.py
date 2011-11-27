@@ -37,6 +37,12 @@ class Connection(object):
         self.pheromone[task] = quantity
         self.check_limits(task)
 
+    def get_annotated_pheromone(self, task):
+        pheromones = self.get_pheromone(task)
+        if (pheromones == self.get_max_pheromone(task)):
+            pheromones = "%sM" % pheromones
+        return pheromones
+
     def get_max_pheromone(self, task):
         return self.max_pheromone.get(task, self.base_pheromone)
 

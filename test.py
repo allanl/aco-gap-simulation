@@ -83,10 +83,23 @@ class TestNode(unittest.TestCase):
         task = TaskA()
         self.node1.add_connection(self.node2)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), base_pheromones)
-        # artificially force pheromones down
-        self.node1.get_connection(self.node2).pheromone[task] = 100
+        self.node1.get_connection(self.node2).set_pheromone(task, 100)
+        self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 100)
         self.node1.add_conn_pheromones(self.node2, task, 3)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 133)
+
+    def test_annotated_pheromones(self):
+        task = TaskA()
+        self.node1.add_connection(self.node2)
+        self.assertEqual(self.node1.get_conn_annotated_pheromones(self.node2,
+            task), "%dM" % base_pheromones)
+        self.node1.get_connection(self.node2).set_pheromone(task, 100)
+        self.assertEqual(self.node1.get_conn_annotated_pheromones(self.node2, task), 100)
+        self.node1.add_conn_pheromones(self.node2, task, 3)
+        self.assertEqual(self.node1.get_conn_annotated_pheromones(self.node2, task), 133)
+        self.node1.set_max_pheromones(task, 100)
+        self.assertEqual(self.node1.get_conn_annotated_pheromones(self.node2, task),
+            '100M')
 
     def test_initialise_pheromones(self):
         self.task = TaskA()
@@ -342,6 +355,15 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(self.conn1.get_pheromone(task), 133)
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 166)
+
+    def test_get_annotated_pheromone(self):
+        task = TaskA()
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+        self.conn1.set_max_pheromone(task, 100)
+        self.assertEqual(self.conn1.get_pheromone(task), 100)
+        self.assertEqual(self.conn1.get_annotated_pheromone(task), '100M')
+        self.assertTrue(self.conn1.get_annotated_pheromone(task).find('M'))
+        self.assertEqual(self.conn1.get_annotated_pheromone(task).find('m'), -1)
 
     def test_evaporate_pheromone(self):
         task = TaskA()

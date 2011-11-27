@@ -29,7 +29,7 @@ def print_connections(nodes_list):
 # better performance
 def create_adjacency_matrix(nodes_list, task):
     return ['%s,%s' % (node.get_name(),
-            ','.join([repr(node.get_conn_pheromones(onode, task))
+            ','.join([repr(node.get_conn_annotated_pheromones(onode, task))
             for onode in nodes_list]))
             for node in nodes_list]
 

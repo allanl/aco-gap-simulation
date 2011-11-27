@@ -125,6 +125,13 @@ class Node:
             return 0
         #self.get_connection(onode).get_pheromone(task))
 
+    def get_conn_annotated_pheromones(self, onode, task):
+        conn = self.get_connection(onode)
+        if conn is not None:
+            return conn.get_annotated_pheromone(task)
+        else:
+            return 0
+
     def complete_round(self):
         for conn in self.connections:
             conn.evaporate_pheromone() 
