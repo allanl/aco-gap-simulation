@@ -72,7 +72,7 @@ if __name__ == '__main__':
             try:
                 link(nodes[x], nodes[other])
             except TooManyConnections:
-                break
+                continue
 
     taskfactory = TaskFactory()
     nodes[5].add_task(taskfactory.get_task(TaskFactory.tasks.TASKA))
