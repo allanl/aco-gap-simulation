@@ -481,6 +481,20 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(self.conn1.get_min_pheromone(task), 80)
         self.assertEqual(self.conn1.get_max_pheromone(task), 80)
 
+    def test_min_phermone_limit(self):
+        task = TaskA()
+        # blocked by max pheromones
+        self.conn1.set_min_pheromone(task, 1020)
+        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+        self.assertEqual(self.conn1.get_min_pheromone(task), 1000)
+        # raise max pheromones
+        self.conn1.set_max_pheromone(task, 1050)
+        self.assertEqual(self.conn1.get_pheromone(task), 1000)
+        self.assertEqual(self.conn1.get_max_pheromone(task), 1050)
+        self.conn1.set_min_pheromone(task, 1020)
+        self.assertEqual(self.conn1.get_pheromone(task), 1020)
+        self.assertEqual(self.conn1.get_min_pheromone(task), 1020)
+
 class TestTaskFactory(unittest.TestCase):
     def setUp(self):
         self.taskfactory = TaskFactory()

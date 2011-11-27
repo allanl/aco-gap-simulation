@@ -70,6 +70,8 @@ class Connection(object):
         self.check_limits(task)
 
     def check_limits(self, task):
-        if task in self.pheromone:
-            if self.pheromone[task] > self.max_pheromone[task]:
-                self.pheromone[task] = self.max_pheromone[task]
+        task_ph = self.get_pheromone(task)
+        if task_ph > self.get_max_pheromone(task):
+            self.pheromone[task] = self.get_max_pheromone(task)
+        elif task_ph < self.get_min_pheromone(task):
+            self.pheromone[task] = self.get_min_pheromone(task)
