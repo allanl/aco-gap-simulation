@@ -327,11 +327,17 @@ class TestConnection(unittest.TestCase):
     def test_get_node(self):
         self.assertEqual(self.node1, self.conn1.get_node())
 
+    def test_set_pheromone(self):
+        task = TaskA()
+        self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
+        self.conn1.set_pheromone(task, 100)
+        self.assertEqual(self.conn1.get_pheromone(task), 100)
+
     def test_add_pheromone(self):
         task = TaskA()
         self.assertEqual(self.conn1.get_pheromone(task), base_pheromones)
-        # artificially force pheromones down
-        self.conn1.pheromone[task] = 100
+        self.conn1.set_pheromone(task, 100)
+        self.assertEqual(self.conn1.get_pheromone(task), 100)
         self.conn1.add_pheromone(task, 3)
         self.assertEqual(self.conn1.get_pheromone(task), 133)
         self.conn1.add_pheromone(task, 3)

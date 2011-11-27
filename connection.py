@@ -22,18 +22,20 @@ class Connection(object):
 
     def add_pheromone(self, task, path_length):
         quantity = 100 / path_length
-        self.initialise_pheromone(task)
-        self.pheromone[task] = self.pheromone.get(task, self.base_pheromone) + quantity
-        self.check_limits(task)
+        self.set_pheromone(task, self.get_pheromone(task) + quantity)
 
     def evaporate_pheromone(self):
         for task in self.pheromone:
-            self.pheromone[task] = evaporate_pheromones(self.evaporation_rate,
-                                        self.pheromone[task])
+            self.set_pheromone(task, evaporate_pheromones(self.evaporation_rate,
+                                        self.get_pheromone(task)))
 
     def get_pheromone(self, task):
         self.initialise_pheromone(task)
         return self.pheromone[task]
+
+    def set_pheromone(self, task, quantity):
+        self.pheromone[task] = quantity
+        self.check_limits(task)
 
     def get_max_pheromone(self, task):
         return self.max_pheromone.get(task, self.base_pheromone)
