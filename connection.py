@@ -18,6 +18,7 @@ class Connection(object):
     def initialise_pheromone(self, task):
         if task not in self.pheromone:
             self.pheromone[task] = self.base_pheromone
+        if task not in self.max_pheromone:
             self.max_pheromone[task] = self.base_pheromone
 
     def add_pheromone(self, task, path_length):
