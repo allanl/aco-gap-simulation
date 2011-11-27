@@ -486,13 +486,13 @@ class TestUtilities(unittest.TestCase):
 
     def test_min_pheromones(self):
         min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.05)
-        self.assertEqual(min_ph, 571)
+        self.assertEqual(min_ph, 300)
         min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.25)
-        self.assertEqual(min_ph, 195)
+        self.assertEqual(min_ph, 128)
         min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.5)
-        self.assertEqual(min_ph, 86)
+        self.assertEqual(min_ph, 61)
         min_ph = calc_min_pheromones(base_pheromones, 3, 3, 0.75)
-        self.assertEqual(min_ph, 33)
+        self.assertEqual(min_ph, 24)
         min_ph = calc_min_pheromones(base_pheromones, 3, 3, 1.0)
         self.assertEqual(min_ph, 0)
 

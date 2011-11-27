@@ -12,8 +12,11 @@ def calc_min_pheromones(max_pheromones, number_connections,
     # \sqrt[n]p_{best})
     # chose not to reduce number of connections by 1 to avoid divide by 0
     nth_root = calc_nth_root(best_path_prob, num_steps)
-    return int((max_pheromones * (1.0 - nth_root)) /
-        float(number_connections * nth_root))
+    dividend = max_pheromones * (1.0 - nth_root)
+    # increment divisor by 1 to prevent divisor being less than 1
+    # and so min_ph potentially being higher than max_ph
+    divisor = number_connections * nth_root + 1
+    return int(dividend / divisor)
 
 def calc_nth_root(number, root):
     if root == 0: root = 1
