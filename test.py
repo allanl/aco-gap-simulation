@@ -88,6 +88,14 @@ class TestNode(unittest.TestCase):
         self.node1.add_conn_pheromones(self.node2, task, 3)
         self.assertEqual(self.node1.get_conn_pheromones(self.node2, task), 133)
 
+    def test_annotated_pheromones_no_conn(self):
+        task = TaskA()
+        self.assertEqual(self.node1.get_conn_annotated_pheromones(self.node2,
+            task), '0')
+        self.node1.add_connection(self.node2)
+        self.assertEqual(self.node1.get_conn_annotated_pheromones(self.node2,
+            task), "%dM" % base_pheromones)
+
     def test_annotated_pheromones(self):
         task = TaskA()
         self.node1.add_connection(self.node2)

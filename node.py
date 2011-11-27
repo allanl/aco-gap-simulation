@@ -130,7 +130,7 @@ class Node:
         if conn is not None:
             return conn.get_annotated_pheromone(task)
         else:
-            return 0
+            return '0'
 
     def complete_round(self):
         for conn in self.connections:
