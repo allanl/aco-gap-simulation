@@ -43,6 +43,16 @@ def create_adjacency_matrix_alt(nodes_list, task):
 def link(node1, node2):
     node1.add_connection(node2)
 
+def average(l):
+    return sum(l, 0.0) / len(l)
+
+def show_path_lengths(node, task, ants):
+    ant_path_lengths = [ant.get_path_length() for ant in ants]
+    print 'r%d,path_length,%s,%s,%s' % (i, node.get_name(), task,
+        ','.join(str(length) for length in ant_path_lengths))
+    print 'r%d,path_average,%s,%s,%f' % (i, node.get_name(), task,
+        average(ant_path_lengths))
+
 if __name__ == '__main__':
     number_of_ants = 10
     number_of_nodes = 10
@@ -87,16 +97,10 @@ if __name__ == '__main__':
                     taskfactory.get_task(task), None)
                 for ant in ants:
                     for f in range(100): ant.walk()
+                if i % 10 == 0:
+                    show_path_lengths(node, task, ants)
             node.complete_round()
         if i % 10 == 0:
-            # show path length
-            average = lambda l: sum(l, 0.0) / len(l)
-            ant_path_lengths = [ant.get_path_length() for ant in ants]
-            print 'r%d,path_length,%s,%s,%s' % (i, node.get_name(), task,
-                ','.join(str(length) for length in ant_path_lengths))
-            print 'r%d,path_average,%s,%s,%f' % (i, node.get_name(), task,
-                average(ant_path_lengths))
-
             # show adjacency matrix
             for task in TaskFactory.get_task_names():
                 task = taskfactory.get_task(task)
